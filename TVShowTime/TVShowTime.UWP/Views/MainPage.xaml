@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="TVShowTime.UWP.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
+    xmlns:triggers="using:WindowsStateTriggers"
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="MobileVisualState">
+                    <VisualState.StateTriggers>
+                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Mobile" />
+                    </VisualState.StateTriggers>
+                    
+                    <VisualState.Setters>
+                        <Setter Target="HamburgerMenuControl.DisplayMode" Value="Overlay" />
+                        <Setter Target="ContentFrame.Margin" Value="0 40 0 0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="DesktopVisualState">
+                    <VisualState.StateTriggers>
+                        <triggers:DeviceFamilyStateTrigger DeviceFamily="Desktop" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="HamburgerMenuControl.DisplayMode" Value="CompactOverlay" />
+                        <Setter Target="HamburgerMenuControl.Margin" Value="0 32 0 0" />
+                        <Setter Target="ExtendedTitleBar.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel x:Name="ExtendedTitleBar" 
+                    Visibility="Collapsed"
+                    Background="{StaticResource PrimaryBlack}"
+                    VerticalAlignment="Top"
+                    Height="32" Orientation="Horizontal">
+            <Image Source="/Images/logo.png" Margin="16 6"
+                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+            
+            <TextBlock Text="TVShow Time (Beta)" Margin="4 0 0 0"
+                       VerticalAlignment="Center" FontSize="12"
+                       Foreground="{StaticResource PrimaryWhite}" />
+        </StackPanel>
+
+        <controls:HamburgerMenu x:Name="HamburgerMenuControl"
+                                DisplayMode="CompactOverlay"
+                                PaneBackground="{StaticResource PrimaryBlack}"
+                                Foreground="{StaticResource PrimaryGray}"
+                                ItemClick="OnMenuItemClick"
+                                ItemTemplate="{StaticResource SymbolMenuItemTemplate}"
+                                OptionsItemClick="OnMenuItemClick"
+                                OptionsItemTemplate="{StaticResource GlyphMenuItemTemplate}">
+            <Frame x:Name="ContentFrame">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition>
+                            <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                                <ContinuumNavigationTransitionInfo />
+                            </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                        </NavigationThemeTransition>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+        </controls:HamburgerMenu>
+    </Grid>
+</Page>

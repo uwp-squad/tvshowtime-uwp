@@ -1,0 +1,95 @@
+﻿<Page
+    x:Class="TVShowTime.UWP.Views.ToWatchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TVShowTime.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:apimodels="using:TVShowTimeApi.Model"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    mc:Ignorable="d"
+    DataContext="{Binding ToWatch, Source={StaticResource Locator}}"
+    NavigationCacheMode="Required">
+
+    <Page.Resources>
+        <DataTemplate x:Key="EpisodeTemplate" x:DataType="apimodels:Episode">
+            <controls:DropShadowPanel Margin="8 16" BlurRadius="10.0" ShadowOpacity="0.3">
+                <Grid Background="{StaticResource PrimaryWhite}" Padding="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Visibility="{Binding Path=IsNew}"
+                          Canvas.ZIndex="1"
+                          VerticalAlignment="Top" HorizontalAlignment="Left"
+                          Height="50">
+                        <Polygon Fill="{StaticResource PrimaryYellow}"
+                                 Points="0,0, 50,0, 0,50" />
+
+                        <TextBlock Text="NEW" FontSize="11" 
+                                   Foreground="{StaticResource PrimaryBlack}"
+                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <CompositeTransform Rotation="-45" TranslateX="13" TranslateY="-4" />
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Grid>
+
+                    <controls:ImageEx Grid.Row="0"
+                                      Source="{Binding Path=Show.Images.Posters.Zero}"
+                                      PlaceholderSource="/Images/default-poster.png"
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"
+                                      Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
+
+                    <ProgressBar Grid.Row="0" VerticalAlignment="Bottom" 
+                                 Value="{Binding Path=Show.PercentageSeen, Converter={StaticResource DecimalToDoubleConverter}}" 
+                                 Minimum="0" Maximum="100"
+                                 Foreground="{StaticResource PrimaryGreen}" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="0 4 0 2"
+                               FontWeight="Bold" Foreground="{StaticResource PrimaryBlack}"
+                               FontSize="14"
+                               HorizontalAlignment="Stretch"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
+                        <Run Text="Season" />
+                        <Run Text="{Binding Path=Season}" />
+                        <Run Text="Episode" />
+                        <Run Text="{Binding Path=Number}" />
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="2" Text="{Binding Path=Show.Name}"
+                               Foreground="{StaticResource PrimaryBlack}"
+                               FontSize="12"
+                               HorizontalAlignment="Stretch"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </controls:DropShadowPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" x:Name="ToWatchTitle"
+                   Padding="10"
+                   Style="{StaticResource TitleTextBlockStyle}">
+            <Run Text="To Watch (" /><Run Text="{Binding Path=Episodes.Count}" /><Run Text=")" />
+        </TextBlock>
+
+        <controls:AdaptiveGridView Grid.Row="1" x:Name="AdaptiveGridViewControl"
+                                   ItemsSource="{Binding Path=Episodes}"
+                                   SelectionMode="None"
+                                   DesiredWidth="200"
+                                   ItemTemplate="{StaticResource EpisodeTemplate}"
+                                   IsItemClickEnabled="True"
+                                   ItemClickCommand="{Binding Path=SelectEpisodeCommand}"
+                                   animations:ReorderGridAnimation.Duration="250" />
+    </Grid>
+</Page>
