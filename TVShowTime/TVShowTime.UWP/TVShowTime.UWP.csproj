@@ -99,9 +99,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\NewEpisodesBackgroundTask.cs" />
     <Compile Include="Configuration\AuthConstants.cs" />
     <Compile Include="Constants\LocalStorageConstants.cs" />
     <Compile Include="Constants\LoginConstants.cs" />
+    <Compile Include="Constants\NotificationConstants.cs" />
     <Compile Include="Constants\ServiceLocatorConstants.cs" />
     <Compile Include="Constants\ViewConstants.cs" />
     <Compile Include="Controls\ToggleButtonEx.cs" />
