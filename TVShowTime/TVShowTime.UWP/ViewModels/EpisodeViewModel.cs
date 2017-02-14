@@ -105,6 +105,11 @@ namespace TVShowTime.UWP.ViewModels
             RefreshByEpisodeId(episode.Id);
         }
 
+        public void LoadEpisode(long episodeId)
+        {
+            RefreshByEpisodeId(episodeId);
+        }
+
         #endregion
 
         #region Private Methods

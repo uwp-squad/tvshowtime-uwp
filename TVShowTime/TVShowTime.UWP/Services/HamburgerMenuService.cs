@@ -116,6 +116,12 @@ namespace TVShowTime.UWP.Services
                 return;
             }
 
+            // Can't navigate twice to the same page
+            if (_currentPageKey == pageKey)
+            {
+                return;
+            }
+
             _currentPageKey = pageKey;
 
             // Navigate and reset selected item of the hamburger menu

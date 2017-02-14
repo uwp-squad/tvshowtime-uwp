@@ -16,6 +16,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using TVShowTime.UWP.Views;
 using Windows.UI;
+using Microsoft.QueryStringDotNET;
+using TVShowTime.UWP.Constants;
+using Microsoft.Practices.ServiceLocation;
+using TVShowTime.UWP.ViewModels;
+using Microsoft.Toolkit.Uwp;
 
 namespace TVShowTime.UWP
 {
@@ -24,6 +29,8 @@ namespace TVShowTime.UWP
     /// </summary>
     sealed partial class App : Application
     {
+        #region Constructor
+
         /// <summary>
         /// Initialise l'objet d'application de singleton.  Il s'agit de la première ligne du code créé
         /// à être exécutée. Elle correspond donc à l'équivalent logique de main() ou WinMain().
@@ -33,6 +40,10 @@ namespace TVShowTime.UWP
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
+
+        #endregion
+
+        #region Events
 
         /// <summary>
         /// Invoqué lorsque l'application est lancée normalement par l'utilisateur final.  D'autres points d'entrée
@@ -75,11 +86,30 @@ namespace TVShowTime.UWP
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            // Get the root frame
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Handle toast activation
+            if (args is ToastNotificationActivatedEventArgs)
+            {
+                HandleToastActivation(args as ToastNotificationActivatedEventArgs);
+            }
+
+            // Ensure the current window is active
+            Window.Current.Activate();
+        }
+
+        /// <summary>
         /// Appelé lorsque la navigation vers une page donnée échoue
         /// </summary>
         /// <param name="sender">Frame à l'origine de l'échec de navigation.</param>
         /// <param name="e">Détails relatifs à l'échec de navigation</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -97,5 +127,34 @@ namespace TVShowTime.UWP
             //TODO: enregistrez l'état de l'application et arrêtez toute activité en arrière-plan
             deferral.Complete();
         }
+
+        #endregion
+
+        #region Private methods
+
+        private void HandleToastActivation(ToastNotificationActivatedEventArgs args)
+        {
+            // Parse the query string
+            var query = QueryString.Parse(args.Argument);
+
+            // See what action is being requested 
+            switch (query["action"])
+            {
+                case NotificationConstants.AlertNewEpisode:
+                    if (long.TryParse(query["episodeId"], out long episodeId))
+                    {
+                        new LocalObjectStorageHelper().Save(LocalStorageConstants.NavigateToEpisode, episodeId);
+
+                        if (args.PreviousExecutionState == ApplicationExecutionState.Running ||
+                            args.PreviousExecutionState == ApplicationExecutionState.Suspended)
+                        {
+                            ServiceLocator.Current.GetInstance<MainViewModel>().HandleActivation();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        #endregion
     }
 }
