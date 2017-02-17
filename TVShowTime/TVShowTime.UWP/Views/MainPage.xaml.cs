@@ -7,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Models;
 using TVShowTime.UWP.Services;
+using TVShowTime.UWP.ViewModels;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -90,8 +91,11 @@ namespace TVShowTime.UWP.Views
 
             HamburgerMenuControl.ItemsSource = _hamburgerMenuService.MenuItems.Where(item => item.Type == MenuItemType.Main);
             HamburgerMenuControl.OptionsItemsSource = _hamburgerMenuService.MenuItems.Where(item => item.Type == MenuItemType.Options);
-        }
 
+            // After the page is loaded
+            Loaded += OnLoaded;
+        }
+        
         #endregion
 
         #region Events
@@ -131,6 +135,12 @@ namespace TVShowTime.UWP.Views
                 e.Handled = true;
                 ContentFrame.GoBack();
             }
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            // Handle app activation
+            ServiceLocator.Current.GetInstance<MainViewModel>().HandleActivation();
         }
 
         #endregion

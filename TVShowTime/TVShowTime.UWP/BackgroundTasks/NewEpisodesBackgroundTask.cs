@@ -32,7 +32,12 @@ namespace TVShowTime.UWP.BackgroundTasks
                 .Subscribe(async (agendaResponse) =>
                 {
                     // Retrieve list of episodes already selected
-                    var newEpisodesIdsSelected = await localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, new List<long>());
+                    var newEpisodesIdsSelected = new List<long>();
+
+                    if (await localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.NewEpisodesIdsSelected))
+                    {
+                        await localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, new List<long>());
+                    }
 
                     var episodesInAgenda = agendaResponse.Episodes;
                     foreach (var episode in episodesInAgenda)
@@ -43,10 +48,10 @@ namespace TVShowTime.UWP.BackgroundTasks
                             GenerateToastNotification(episode);
                             newEpisodesIdsSelected.Add(episode.Id);
                         }
-
-                        // Save the updated list in local storage
-                        await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, newEpisodesIdsSelected);
                     }
+
+                    // Save the updated list in local storage
+                    await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, newEpisodesIdsSelected);
                 });
         }
 
@@ -116,7 +121,7 @@ namespace TVShowTime.UWP.BackgroundTasks
             DateTime dueDateTime = episode.AirDate.Value;
             var toastNotification = new ScheduledToastNotification(toastContent.GetXml(), dueDateTime)
             {
-                Group = episode.Show.Name
+                Group = episode.Show.Id.ToString()
             };
 
             // Schedule toast notification

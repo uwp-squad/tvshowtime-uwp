@@ -37,7 +37,6 @@ namespace TVShowTime.UWP.ViewModels
             _localObjectStorageHelper = ServiceLocator.Current.GetInstance<IObjectStorageHelper>(ServiceLocatorConstants.LocalObjectStorageHelper);
 
             RegisterBackgroundTasks();
-            HandleActivation();
         }
 
         #endregion
@@ -69,6 +68,7 @@ namespace TVShowTime.UWP.ViewModels
             {
                 ServiceLocator.Current.GetInstance<EpisodeViewModel>().LoadEpisode(episodeId.Value);
                 _hamburgerMenuService.NavigateTo(ViewConstants.Episode);
+                _localObjectStorageHelper.Save(LocalStorageConstants.NavigateToEpisode, (long?)null);
             }
         }
 

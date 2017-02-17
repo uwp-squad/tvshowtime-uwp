@@ -21,6 +21,8 @@ using TVShowTime.UWP.Constants;
 using Microsoft.Practices.ServiceLocation;
 using TVShowTime.UWP.ViewModels;
 using Microsoft.Toolkit.Uwp;
+using Windows.ApplicationModel.Background;
+using System.Reflection;
 
 namespace TVShowTime.UWP
 {
@@ -54,8 +56,7 @@ namespace TVShowTime.UWP
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
-            // assurez-vous juste que la fenêtre est active
+            // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu, assurez-vous juste que la fenêtre est active
             if (rootFrame == null)
             {
                 // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
@@ -95,9 +96,33 @@ namespace TVShowTime.UWP
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Handle toast activation
-            if (args is ToastNotificationActivatedEventArgs)
+            if (args is ToastNotificationActivatedEventArgs toastNotificationActivatedEventArgs)
             {
-                HandleToastActivation(args as ToastNotificationActivatedEventArgs);
+                HandleToastActivation(toastNotificationActivatedEventArgs);
+            }
+
+            // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu, assurez-vous juste que la fenêtre est active
+            if (rootFrame == null)
+            {
+                // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: chargez l'état de l'application précédemment suspendue
+                }
+
+                // Placez le frame dans la fenêtre active
+                Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content == null)
+            {
+                // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
+                // puis configurez la nouvelle page en transmettant les informations requises en tant que paramètre
+                rootFrame.Navigate(typeof(LoginPage));
             }
 
             // Ensure the current window is active
@@ -128,6 +153,16 @@ namespace TVShowTime.UWP
             deferral.Complete();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+            HandleBackgroundTaskActivation(args, typeof(App));
+        }
+        
         #endregion
 
         #region Private methods
@@ -137,8 +172,10 @@ namespace TVShowTime.UWP
             // Parse the query string
             var query = QueryString.Parse(args.Argument);
 
+            query.TryGetValue("action", out string action);
+
             // See what action is being requested 
-            switch (query["action"])
+            switch (action)
             {
                 case NotificationConstants.AlertNewEpisode:
                     if (long.TryParse(query["episodeId"], out long episodeId))
@@ -153,6 +190,24 @@ namespace TVShowTime.UWP
                     }
                     break;
             }
+        }
+
+        private void HandleBackgroundTaskActivation(BackgroundActivatedEventArgs args, Type appType)
+        {
+            var deferral = args.TaskInstance.GetDeferral();
+
+            var assembly = appType.GetTypeInfo().Assembly;
+            var type = assembly.GetTypes()
+                .Where(t => t.GetTypeInfo().IsClass && t.Name == args.TaskInstance.Task.Name)
+                .FirstOrDefault();
+
+            if (type != null)
+            {
+                var task = Activator.CreateInstance(type) as IBackgroundTask;
+                task.Run(args.TaskInstance);
+            }
+
+            deferral.Complete();
         }
 
         #endregion
