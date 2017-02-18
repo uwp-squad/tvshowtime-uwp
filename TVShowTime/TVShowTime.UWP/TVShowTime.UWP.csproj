@@ -108,6 +108,7 @@
     <Compile Include="Constants\ViewConstants.cs" />
     <Compile Include="Controls\ToggleButtonEx.cs" />
     <Compile Include="Converters\DecimalToDoubleConverter.cs" />
+    <Compile Include="Converters\EmotionValueToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolInvertedToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
@@ -193,6 +194,12 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Images\default-poster.png" />
+    <Content Include="Images\Emoji\astonished.png" />
+    <Content Include="Images\Emoji\cry.png" />
+    <Content Include="Images\Emoji\ok_hand.png" />
+    <Content Include="Images\Emoji\sleeping.png" />
+    <Content Include="Images\Emoji\smile.png" />
+    <Content Include="Images\Emoji\thumbsdown.png" />
     <Content Include="Images\landing-banner.jpg" />
     <Content Include="Images\logo.png" />
     <None Include="Package.StoreAssociation.xml" />

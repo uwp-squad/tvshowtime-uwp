@@ -26,6 +26,12 @@ namespace TVShowTime.UWP.ViewModels
         #region Properties
 
         public Episode Episode { get; set; }
+        public Emotion GoodEmotion { get; } = Emotion.Good;
+        public Emotion FunEmotion { get; } = Emotion.Fun;
+        public Emotion WowEmotion { get; } = Emotion.Wow;
+        public Emotion SadEmotion { get; } = Emotion.Sad;
+        public Emotion SosoEmotion { get; } = Emotion.Soso;
+        public Emotion BadEmotion { get; } = Emotion.Bad;
 
         #endregion
 
@@ -34,6 +40,7 @@ namespace TVShowTime.UWP.ViewModels
         public ICommand ToggleWatchCommand { get; }
         public ICommand GoToPreviousEpisodeCommand { get; }
         public ICommand GoToNextEpisodeCommand { get; }
+        public ICommand ToggleEmotionCommand { get; }
 
         #endregion
 
@@ -49,6 +56,7 @@ namespace TVShowTime.UWP.ViewModels
             ToggleWatchCommand = new RelayCommand(ToggleWatch);
             GoToPreviousEpisodeCommand = new RelayCommand(GoToPreviousEpisode);
             GoToNextEpisodeCommand = new RelayCommand(GoToNextEpisode);
+            ToggleEmotionCommand = new RelayCommand<Emotion>(ToggleEmotion);
         }
 
         #endregion
@@ -67,7 +75,7 @@ namespace TVShowTime.UWP.ViewModels
             else
                 toggleWatchObservable = _tvshowtimeApiService.UnmarkEpisodeWatched(request);
 
-            toggleWatchObservable.Subscribe(async (episodeResponse) =>
+            toggleWatchObservable.Subscribe(async (response) =>
             {
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
@@ -94,6 +102,48 @@ namespace TVShowTime.UWP.ViewModels
         private void GoToNextEpisode()
         {
             RefreshByEpisodeId(Episode.NextEpisode.Id);
+        }
+
+        private void ToggleEmotion(Emotion emotion)
+        {
+            if (Episode.Emotion == null || Episode.Emotion.Id != (int)emotion)
+            {
+                // Set emotion selected
+                _tvshowtimeApiService.SetEmotionForEpisode(Episode.Id, emotion)
+                    .Subscribe(async (response) =>
+                    {
+                        await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                        {
+                            Episode.Emotion = new EpisodeEmotion
+                            {
+                                Id = (int)emotion,
+                                Name = emotion.ToString()
+                            };
+                            RaisePropertyChanged(nameof(Episode));
+                        });
+                    },
+                    (error) =>
+                    {
+                        throw new Exception();
+                    });
+            }
+            else
+            {
+                // Remove emotion
+                _tvshowtimeApiService.DeleteEmotionForEpisode(Episode.Id)
+                    .Subscribe(async (response) =>
+                    {
+                        await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                        {
+                            Episode.Emotion = null;
+                            RaisePropertyChanged(nameof(Episode));
+                        });
+                    },
+                    (error) =>
+                    {
+                        throw new Exception();
+                    });
+            }
         }
 
         #endregion

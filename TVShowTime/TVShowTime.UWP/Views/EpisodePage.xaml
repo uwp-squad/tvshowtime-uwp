@@ -29,6 +29,30 @@
 
                         <Setter Target="DescriptionPanel.Padding" Value="20" />
                         <Setter Target="OverviewText.FontSize" Value="14" />
+
+                        <Setter Target="GoodEmotionImage.Width" Value="24" />
+                        <Setter Target="GoodEmotionImage.Height" Value="24" />
+                        <Setter Target="GoodEmotionImage.Margin" Value="2" />
+
+                        <Setter Target="FunEmotionImage.Width" Value="24" />
+                        <Setter Target="FunEmotionImage.Height" Value="24" />
+                        <Setter Target="FunEmotionImage.Margin" Value="2" />
+
+                        <Setter Target="WowEmotionImage.Width" Value="24" />
+                        <Setter Target="WowEmotionImage.Height" Value="24" />
+                        <Setter Target="WowEmotionImage.Margin" Value="2" />
+
+                        <Setter Target="SadEmotionImage.Width" Value="24" />
+                        <Setter Target="SadEmotionImage.Height" Value="24" />
+                        <Setter Target="SadEmotionImage.Margin" Value="2" />
+
+                        <Setter Target="SosoEmotionImage.Width" Value="24" />
+                        <Setter Target="SosoEmotionImage.Height" Value="24" />
+                        <Setter Target="SosoEmotionImage.Margin" Value="2" />
+
+                        <Setter Target="BadEmotionImage.Width" Value="24" />
+                        <Setter Target="BadEmotionImage.Height" Value="24" />
+                        <Setter Target="BadEmotionImage.Margin" Value="2" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -43,6 +67,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <!-- Background image -->
         <Grid>
             <controls:ImageEx x:Name="BackgroundImage" 
                               Source="{Binding Path=Episode.Images.Screen.One}"
@@ -57,6 +82,7 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
+                <!-- Header (show name, episode name, watch button, ...) -->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition x:Name="PreviousEpisodeColumn" Width="60" />
@@ -132,7 +158,8 @@
                             Visibility="{Binding Path=Episode.NextEpisode, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
                             Command="{Binding Path=GoToNextEpisodeCommand}" />
                 </Grid>
-
+                
+                <!-- Description (air date, overview) -->
                 <Grid>
                     <Grid x:Name="FrostedGlassPanel" />
 
@@ -150,6 +177,96 @@
                                    Foreground="{StaticResource PrimaryBlack}" />
                     </StackPanel>
                 </Grid>
+
+                <!-- Emotion -->
+                <StackPanel Orientation="Horizontal" 
+                            Margin="10"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolToBoolConverter}}">
+                    <ToggleButton x:Name="GoodEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.GoodEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=GoodEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="GoodEmotionImage" 
+                                   Margin="5" Source="/Images/Emoji/ok_hand.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="GOOD" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="FunEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.FunEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=FunEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="FunEmotionImage" 
+                                   Margin="5" Source="/Images/Emoji/smile.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="FUN" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="WowEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.WowEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=WowEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="WowEmotionImage"
+                                   Margin="5" Source="/Images/Emoji/astonished.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="WOW" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="SadEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SadEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=SadEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="SadEmotionImage"
+                                   Margin="5" Source="/Images/Emoji/cry.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="SAD" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="SosoEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SosoEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=SosoEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="SosoEmotionImage"
+                                   Margin="5" Source="/Images/Emoji/sleeping.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="SO-SO" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+
+                    <ToggleButton x:Name="BadEmotionButton" 
+                                  Margin="5" Style="{StaticResource RoundToggleButton}"
+                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.BadEmotion, Source={StaticResource Locator}}}"
+                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=BadEmotion}">
+                        <ToggleButton.Content>
+                            <Image x:Name="BadEmotionImage"
+                                   Margin="5" Source="/Images/Emoji/thumbsdown.png" Width="60" Height="60" />
+                        </ToggleButton.Content>
+
+                        <ToolTipService.ToolTip>
+                            <TextBlock Text="BAD" />
+                        </ToolTipService.ToolTip>
+                    </ToggleButton>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>
