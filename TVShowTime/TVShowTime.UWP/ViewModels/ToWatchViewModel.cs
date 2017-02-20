@@ -64,6 +64,22 @@ namespace TVShowTime.UWP.ViewModels
                {
                    Refresh();
                });
+
+            _eventService.FollowShowEvent
+                .Subscribe((show) =>
+                {
+                    Refresh();
+                });
+
+            _eventService.UnfollowShowEvent
+                .Subscribe((show) =>
+                {
+                    var episodeOfTheShow = Episodes.FirstOrDefault(e => e.Show.Id == show.Id);
+                    if (episodeOfTheShow != null)
+                    {
+                        Episodes.Remove(episodeOfTheShow);
+                    }
+                });
         }
 
         #endregion

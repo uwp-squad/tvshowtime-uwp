@@ -13,9 +13,13 @@ namespace TVShowTime.UWP.Services
     {
         IObservable<Episode> WatchEpisodeEvent { get; }
         IObservable<Episode> UnwatchEpisodeEvent { get; }
+        IObservable<Show> FollowShowEvent { get; }
+        IObservable<Show> UnfollowShowEvent { get; }
 
         void WatchEpisode(Episode episode);
         void UnwatchEpisode(Episode episode);
+        void FollowShow(Show show);
+        void UnfollowShow(Show show);
     }
 
     public class EventService : IEventService
@@ -24,6 +28,8 @@ namespace TVShowTime.UWP.Services
 
         private Subject<Episode> _watchEpisodeSubject = new Subject<Episode>();
         private Subject<Episode> _unwatchEpisodeSubject = new Subject<Episode>();
+        private Subject<Show> _followShowSubject = new Subject<Show>();
+        private Subject<Show> _unfollowShowSubject = new Subject<Show>();
 
         #endregion
 
@@ -31,6 +37,8 @@ namespace TVShowTime.UWP.Services
 
         public IObservable<Episode> WatchEpisodeEvent => _watchEpisodeSubject.AsObservable();
         public IObservable<Episode> UnwatchEpisodeEvent => _unwatchEpisodeSubject.AsObservable();
+        public IObservable<Show> FollowShowEvent => _followShowSubject.AsObservable();
+        public IObservable<Show> UnfollowShowEvent => _unfollowShowSubject.AsObservable();
 
         #endregion
 
@@ -44,6 +52,16 @@ namespace TVShowTime.UWP.Services
         public void UnwatchEpisode(Episode episode)
         {
             _unwatchEpisodeSubject.OnNext(episode);
+        }
+
+        public void FollowShow(Show show)
+        {
+            _followShowSubject.OnNext(show);
+        }
+
+        public void UnfollowShow(Show show)
+        {
+            _unfollowShowSubject.OnNext(show);
         }
 
         #endregion

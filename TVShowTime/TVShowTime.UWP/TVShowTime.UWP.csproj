@@ -106,6 +106,9 @@
     <Compile Include="Constants\NotificationConstants.cs" />
     <Compile Include="Constants\ServiceLocatorConstants.cs" />
     <Compile Include="Constants\ViewConstants.cs" />
+    <Compile Include="Controls\ExploreItemControl.xaml.cs">
+      <DependentUpon>ExploreItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ToggleButtonEx.cs" />
     <Compile Include="Converters\DecimalToDoubleConverter.cs" />
     <Compile Include="Converters\EmotionValueToBoolConverter.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\HamburgerMenuService.cs" />
     <Compile Include="ViewModels\EpisodeViewModel.cs" />
+    <Compile Include="ViewModels\ExploreViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ShowViewModel.cs" />
@@ -127,6 +131,9 @@
     <Compile Include="ViewModels\UpcomingViewModel.cs" />
     <Compile Include="Views\EpisodePage.xaml.cs">
       <DependentUpon>EpisodePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ExplorePage.xaml.cs">
+      <DependentUpon>ExplorePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -216,7 +223,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ExploreItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\EpisodePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ExplorePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

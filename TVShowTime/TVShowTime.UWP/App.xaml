@@ -401,7 +401,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ToggleButton">
-                            <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" CornerRadius="50">
+                            <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" CornerRadius="45">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">

@@ -64,6 +64,13 @@ namespace TVShowTime.UWP.Services
                     PageType = typeof(UpcomingPage)
                 }
 #endif
+                new NavigationMenuItem
+                {
+                    Symbol = Symbol.World,
+                    Name = "Explore",
+                    Type = MenuItemType.Main,
+                    PageType = typeof(ExplorePage)
+                }
             };
 
             if (StoreServicesFeedbackLauncher.IsSupported())

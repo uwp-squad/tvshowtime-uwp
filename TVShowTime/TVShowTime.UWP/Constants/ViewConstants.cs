@@ -9,6 +9,7 @@ namespace TVShowTime.UWP.Constants
     public static class ViewConstants
     {
         public const string Episode = "Episode";
+        public const string Explore = "Explore";
         public const string Login = "Login";
         public const string Main = "Main";
         public const string Show = "Show";
