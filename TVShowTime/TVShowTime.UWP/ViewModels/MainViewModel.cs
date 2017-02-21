@@ -49,7 +49,7 @@ namespace TVShowTime.UWP.ViewModels
             if (!BackgroundTaskHelper.IsBackgroundTaskRegistered(typeof(NewEpisodesBackgroundTask)))
             {
                 BackgroundTaskHelper.Register(
-                    typeof(NewEpisodesBackgroundTask).Name,
+                    nameof(NewEpisodesBackgroundTask),
                     new TimeTrigger(120, false),
                     conditions: new SystemCondition(SystemConditionType.InternetAvailable)
                 );
