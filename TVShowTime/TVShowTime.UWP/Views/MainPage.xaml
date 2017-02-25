@@ -45,7 +45,7 @@
             <Image Source="/Images/logo.png" Margin="16 6"
                    VerticalAlignment="Center" HorizontalAlignment="Center" />
             
-            <TextBlock Text="TVShow Time (Beta)" Margin="4 0 0 0"
+            <TextBlock Text="TVShow Time for Windows 10" Margin="4 0 0 0"
                        VerticalAlignment="Center" FontSize="12"
                        Foreground="{StaticResource PrimaryWhite}" />
         </StackPanel>
