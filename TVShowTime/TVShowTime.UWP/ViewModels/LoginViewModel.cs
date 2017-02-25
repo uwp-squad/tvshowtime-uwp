@@ -109,6 +109,24 @@ namespace TVShowTime.UWP.ViewModels
 
         #endregion
 
+        #region Public Methods
+
+        public void Logout()
+        {
+            _tvshowtimeApiService.GetCurrentUser().Subscribe(async (userResponse) =>
+            {
+                await DeleteUserConnectionProfileAsync(userResponse.User.Username);
+
+                // Navigate back to login page
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                {
+                    _navigationService.GoBack();
+                });
+            });
+        }
+
+        #endregion
+
         #region Private Methods
 
         private string RetrieveUserTokenAndUsername()
@@ -180,37 +198,49 @@ namespace TVShowTime.UWP.ViewModels
 
         #region Manage User Connection Profiles
 
-        private async Task<Dictionary<string, UserConnnectionProfile>> RetrieveDictionaryOfConnectionProfilesAsync()
+        private async Task<Dictionary<string, UserConnnectionProfile>> RetrieveAllConnectionProfilesAsync()
         {
-            var dictionaryOfUserConnectionProfiles = new Dictionary<string, UserConnnectionProfile>();
+            // Retrieve list of all connection profiles
+            var profiles = new Dictionary<string, UserConnnectionProfile>();
             if (await _localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.UserConnectionProfiles))
             {
-                dictionaryOfUserConnectionProfiles = await _localObjectStorageHelper
-                    .ReadFileAsync(LocalStorageConstants.UserConnectionProfiles, dictionaryOfUserConnectionProfiles);
+                profiles = await _localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.UserConnectionProfiles, profiles);
             }
 
-            return dictionaryOfUserConnectionProfiles;
+            return profiles;
         }
 
         private async Task<UserConnnectionProfile> RetrieveConnectionProfileByUsernameAsync(string username)
         {
             // Retrieve a connection profile by username
-            var dictionaryOfUserConnectionProfiles = await RetrieveDictionaryOfConnectionProfilesAsync();
+            var profiles = await RetrieveAllConnectionProfilesAsync();
 
-            if (!dictionaryOfUserConnectionProfiles.ContainsKey(username))
+            if (!profiles.ContainsKey(username))
                 return null;
 
-            return dictionaryOfUserConnectionProfiles[username];
+            return profiles[username];
         }
 
         private async Task AddUserConnectionProfileAsync(UserConnnectionProfile userConnectionProfile)
         {
             // Set the connection profiles inside the list of all existing profiles
-            var dictionaryOfUserConnectionProfiles = await RetrieveDictionaryOfConnectionProfilesAsync();
-            dictionaryOfUserConnectionProfiles[userConnectionProfile.User.Username] = userConnectionProfile;
+            var profiles = await RetrieveAllConnectionProfilesAsync();
+            profiles[userConnectionProfile.User.Username] = userConnectionProfile;
 
             // Save the dictionary in local storage
-            await _localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.UserConnectionProfiles, dictionaryOfUserConnectionProfiles);
+            await _localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.UserConnectionProfiles, profiles);
+        }
+
+        private async Task DeleteUserConnectionProfileAsync(string username)
+        {
+            // Remove connection profile by key (username)
+            var profiles = await RetrieveAllConnectionProfilesAsync();
+
+            if (profiles.ContainsKey(username))
+                profiles.Remove(username);
+
+            // Save the dictionary in local storage
+            await _localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.UserConnectionProfiles, profiles);
         }
 
         #endregion

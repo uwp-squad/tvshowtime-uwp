@@ -1,4 +1,5 @@
-﻿using Microsoft.Services.Store.Engagement;
+﻿using Microsoft.Practices.ServiceLocation;
+using Microsoft.Services.Store.Engagement;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TVShowTime.UWP.Models;
+using TVShowTime.UWP.ViewModels;
 using TVShowTime.UWP.Views;
 using Windows.UI.Xaml.Controls;
 
@@ -70,13 +72,22 @@ namespace TVShowTime.UWP.Services
                     Name = "Explore",
                     Type = MenuItemType.Main,
                     PageType = typeof(ExplorePage)
+                },
+                new ActionMenuItem
+                {
+                    Glyph = "\uE7E8",
+                    Name = "Logout",
+                    Type = MenuItemType.Options,
+                    Action = () =>
+                    {
+                        ServiceLocator.Current.GetInstance<LoginViewModel>().Logout();
+                    }
                 }
             };
 
             if (StoreServicesFeedbackLauncher.IsSupported())
             {
                 var feedbackMenuItem = new ActionMenuItem
-
                 {
                     Glyph = "\uE939",
                     Name = "Feedback",
@@ -110,6 +121,9 @@ namespace TVShowTime.UWP.Services
 
         public void Configure(string key, Type pageType)
         {
+            if (_pageTypes.ContainsKey(key))
+                return;
+
             _pageTypes.Add(key, pageType);
         }
 

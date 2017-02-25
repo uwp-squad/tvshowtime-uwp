@@ -57,18 +57,15 @@ namespace TVShowTime.UWP.Views
                     titleBar.ButtonHoverForegroundColor = primaryBlackColor;
 
                     titleBar.ButtonPressedBackgroundColor = Color.FromArgb(
-                        primaryYellowColor.A, 
-                        primaryYellowColor.R, 
-                        primaryYellowColor.G, 
+                        primaryYellowColor.A,
+                        primaryYellowColor.R,
+                        primaryYellowColor.G,
                         (byte)(primaryYellowColor.B + 100));
                     titleBar.ButtonPressedForegroundColor = primaryBlackColor;
 
                     titleBar.BackgroundColor = primaryBlackColor;
                     titleBar.ForegroundColor = primaryWhiteColor;
                 }
-
-                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
-                Window.Current.SetTitleBar(ExtendedTitleBar);
             }
 
             // Style status bar (Mobile)
@@ -95,7 +92,7 @@ namespace TVShowTime.UWP.Views
             // After the page is loaded
             Loaded += OnLoaded;
         }
-        
+
         #endregion
 
         #region Events
@@ -109,6 +106,13 @@ namespace TVShowTime.UWP.Views
                 // Initialize hamburger menu service
                 InitializeHamburgerNavigationService();
                 _hamburgerMenuService.NavigateTo(ViewConstants.ToWatch);
+            }
+
+            // Style title bar (Desktop)
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
+            {
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                Window.Current.SetTitleBar(ExtendedTitleBar);
             }
 
             // Each time a navigation event occurs, update the Back button's visibility
