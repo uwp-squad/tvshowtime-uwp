@@ -21,6 +21,7 @@ namespace TVShowTime.UWP.ViewModels
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IEventService _eventService;
 
+        private const int _pageSize = 5;
         private int _currentPage = 0;
         private bool _isLoadingShows = false;
 
@@ -60,7 +61,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private void SelectionChanged(int currentIndex)
         {
-            if (!_isLoadingShows && (Shows.Count - 3) <= currentIndex)
+            if (!_isLoadingShows && (Shows.Count - _pageSize) <= currentIndex)
             {
                 _currentPage++;
                 LoadTrendingShows(_currentPage);
@@ -115,7 +116,7 @@ namespace TVShowTime.UWP.ViewModels
         {
             _isLoadingShows = true;
 
-            _tvshowtimeApiService.GetTrendingShows(page)
+            _tvshowtimeApiService.GetTrendingShows(page, _pageSize)
                 .Subscribe(async (exploreResponse) =>
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
