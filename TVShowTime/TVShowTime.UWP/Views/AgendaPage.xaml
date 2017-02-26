@@ -84,18 +84,27 @@
                            FontSize="16" Margin="0 10 0 0" />
             </StackPanel>
         </DataTemplate>
+
+        <DataTemplate x:Key="AgendaGroupTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=Group.Date.Day}" 
+                           Foreground="{Binding Path=Group.Date, Converter={StaticResource DateToTodayColorConverter}}"
+                           FontWeight="Bold" FontSize="80" />
+
+                <TextBlock Text="{Binding Path=Group.Date, Converter={StaticResource DateToMonthStringConverter}}" 
+                           Foreground="{Binding Path=Group.Date, Converter={StaticResource DateToTodayColorConverter}}"
+                           FontWeight="SemiBold" FontSize="26"
+                           Margin="0 -15 0 0" />
+            </StackPanel>
+        </DataTemplate>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <SemanticZoom ScrollViewer.ZoomMode="Disabled">
             <SemanticZoom.ZoomedOutView>
-                <ListView>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Path=Group.Name}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <ListView ItemsSource="{Binding Path=CollectionGroups, Source={StaticResource AgendaCollection}}"
+                          SelectionMode="None"
+                          ItemTemplate="{StaticResource AgendaGroupTemplate}" />
             </SemanticZoom.ZoomedOutView>
 
             <SemanticZoom.ZoomedInView>
