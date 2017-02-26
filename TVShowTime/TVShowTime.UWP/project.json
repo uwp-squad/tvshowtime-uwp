@@ -10,7 +10,8 @@
     "QueryString.NET": "1.0.0",
     "System.Reactive": "3.1.1",
     "tvshowtime-api-pcl": "1.0.17",
-    "WindowsStateTriggers": "1.1.0"
+    "WindowsStateTriggers": "1.1.0",
+    "WinRTXamlToolkit.UWP": "2.3.0"
   },
   "frameworks": {
     "uap10.0": {}

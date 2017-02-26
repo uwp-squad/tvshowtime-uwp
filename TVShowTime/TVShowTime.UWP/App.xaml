@@ -35,7 +35,10 @@
             <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter" />
             <converters:NullableBoolInvertedToBoolConverter x:Key="NullableBoolInvertedToBoolConverter" />
             <converters:EmotionValueToBoolConverter x:Key="EmotionValueToBoolConverter" />
-            
+            <converters:DateToTodayColorConverter x:Key="DateToTodayColorConverter" />
+            <converters:DateToMonthStringConverter x:Key="DateToMonthStringConverter" />
+            <converters:DateToTimelineStringConverter x:Key="DateToTimelineStringConverter" />
+
             <!-- Styles -->
             <Style TargetType="GridViewItem">
                 <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />

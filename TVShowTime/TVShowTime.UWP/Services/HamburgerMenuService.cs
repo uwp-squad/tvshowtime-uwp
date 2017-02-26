@@ -64,8 +64,15 @@ namespace TVShowTime.UWP.Services
                     Name = "Upcoming",
                     Type = MenuItemType.Main,
                     PageType = typeof(UpcomingPage)
-                }
+                },
 #endif
+                new NavigationMenuItem
+                {
+                    Symbol = Symbol.Calendar,
+                    Name = "Agenda",
+                    Type = MenuItemType.Main,
+                    PageType = typeof(AgendaPage)
+                },
                 new NavigationMenuItem
                 {
                     Symbol = Symbol.World,

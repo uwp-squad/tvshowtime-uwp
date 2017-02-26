@@ -110,18 +110,24 @@
       <DependentUpon>ExploreItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToggleButtonEx.cs" />
+    <Compile Include="Converters\DateToMonthStringConverter.cs" />
+    <Compile Include="Converters\DateToTimelineStringConverter.cs" />
+    <Compile Include="Converters\DateToTodayColorConverter.cs" />
     <Compile Include="Converters\DecimalToDoubleConverter.cs" />
     <Compile Include="Converters\EmotionValueToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolInvertedToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Models\ActionMenuItem.cs" />
+    <Compile Include="Models\AgendaGroup.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuItemType.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
+    <Compile Include="Models\ScrollDirection.cs" />
     <Compile Include="Models\UserConnnectionProfile.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\HamburgerMenuService.cs" />
+    <Compile Include="ViewModels\AgendaViewModel.cs" />
     <Compile Include="ViewModels\EpisodeViewModel.cs" />
     <Compile Include="ViewModels\ExploreViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -129,6 +135,9 @@
     <Compile Include="ViewModels\ShowViewModel.cs" />
     <Compile Include="ViewModels\ToWatchViewModel.cs" />
     <Compile Include="ViewModels\UpcomingViewModel.cs" />
+    <Compile Include="Views\AgendaPage.xaml.cs">
+      <DependentUpon>AgendaPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EpisodePage.xaml.cs">
       <DependentUpon>EpisodePage.xaml</DependentUpon>
     </Compile>
@@ -226,6 +235,10 @@
     <Page Include="Controls\ExploreItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AgendaPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EpisodePage.xaml">
       <SubType>Designer</SubType>

@@ -156,6 +156,7 @@ namespace TVShowTime.UWP.Views
             _hamburgerMenuService.SetHamburgerMenuElement(HamburgerMenuControl);
             _hamburgerMenuService.SetFrameElement(ContentFrame);
 
+            _hamburgerMenuService.Configure(ViewConstants.Agenda, typeof(AgendaPage));
             _hamburgerMenuService.Configure(ViewConstants.Episode, typeof(EpisodePage));
             _hamburgerMenuService.Configure(ViewConstants.Explore, typeof(ExplorePage));
             _hamburgerMenuService.Configure(ViewConstants.Show, typeof(ShowPage));

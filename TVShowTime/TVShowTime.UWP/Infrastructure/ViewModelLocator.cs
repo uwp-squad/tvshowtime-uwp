@@ -58,6 +58,7 @@ namespace TVShowTime.UWP.Infrastructure
             }
 
             // Register ViewModels
+            SimpleIoc.Default.Register<AgendaViewModel>();
             SimpleIoc.Default.Register<EpisodeViewModel>();
             SimpleIoc.Default.Register<ExploreViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
@@ -83,6 +84,11 @@ namespace TVShowTime.UWP.Infrastructure
         #endregion
 
         #region ViewModels
+
+        public AgendaViewModel Agenda
+        {
+            get { return ServiceLocator.Current.GetInstance<AgendaViewModel>(); }
+        }
 
         public EpisodeViewModel Episode
         {
