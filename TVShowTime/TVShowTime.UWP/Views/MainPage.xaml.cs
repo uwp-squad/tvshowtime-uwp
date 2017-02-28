@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.ServiceLocation;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -121,6 +122,11 @@ namespace TVShowTime.UWP.Views
 
         private void OnMenuItemClick(object sender, ItemClickEventArgs e)
         {
+            if (SystemInformation.DeviceFamily == "Windows.Mobile")
+            {
+                HamburgerMenuControl.IsPaneOpen = false;
+            }
+
             if (e.ClickedItem is NavigationMenuItem navigationMenuItem)
             {
                 ContentFrame.Navigate(navigationMenuItem.PageType);
