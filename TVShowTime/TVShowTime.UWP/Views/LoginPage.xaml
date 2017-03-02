@@ -86,7 +86,9 @@
             <Grid x:Name="FrostedGlassPanel" />
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
-                <controls:ImageEx x:Name="LogoImage" Source="/Images/logo.png" Width="100" Height="100" />
+                <controls:ImageEx x:Name="LogoImage" Source="/Images/logo.png" 
+                                  IsCacheEnabled="True"
+                                  Width="100" Height="100" />
 
                 <Grid x:Name="MiddleGrid" Margin="0 40">
                     <StackPanel Visibility="{Binding Path=LoginFailed}">

@@ -43,6 +43,7 @@
 
                     <controls:ImageEx Grid.Row="0"
                                       Source="{Binding Path=Show.Images.Posters.Zero}"
+                                      IsCacheEnabled="True"
                                       PlaceholderSource="/Images/default-poster.png"
                                       VerticalAlignment="Center" HorizontalAlignment="Center"
                                       Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />

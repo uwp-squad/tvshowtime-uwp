@@ -43,6 +43,7 @@
         </VisualStateManager.VisualStateGroups>
 
         <controls:ImageEx Source="{Binding Path=AllImages.Posters.Zero}"
+                          IsCacheEnabled="True"
                           PlaceholderSource="/Images/default-poster.png"
                           VerticalAlignment="Center" HorizontalAlignment="Center"
                           Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
