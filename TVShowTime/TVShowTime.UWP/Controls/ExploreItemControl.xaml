@@ -62,12 +62,14 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock x:Name="TitleText"
-                           Grid.Row="0" Grid.ColumnSpan="2"
-                           Text="{Binding Path=Name}" 
-                           Style="{StaticResource TitleTextBlockStyle}"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource PrimaryWhite}" />
+                <HyperlinkButton x:Name="TitleText"
+                                 Grid.Row="0" Grid.ColumnSpan="2"
+                                 Content="{Binding Path=Name}" 
+                                 FontWeight="SemiBold" FontSize="34"
+                                 Foreground="{StaticResource PrimaryWhite}" 
+                                 Style="{StaticResource TitleLinkStyle}"
+                                 Command="{Binding Path=Explore.SelectShowCommand, Source={StaticResource Locator}}"
+                                 CommandParameter="{Binding Path=Id}" />
 
                 <TextBlock x:Name="OverviewText"
                            Grid.Row="1" Grid.Column="0"

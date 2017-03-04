@@ -63,6 +63,7 @@ namespace TVShowTime.UWP.Infrastructure
             SimpleIoc.Default.Register<ExploreViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ShowViewModel>();
             SimpleIoc.Default.Register<ToWatchViewModel>();
             SimpleIoc.Default.Register<UpcomingViewModel>();
         }

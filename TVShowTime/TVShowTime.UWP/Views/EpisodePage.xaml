@@ -9,6 +9,7 @@
     xmlns:localcontrols="using:TVShowTime.UWP.Controls" 
     xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors" 
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     DataContext="{Binding Episode, Source={StaticResource Locator}}"
     NavigationCacheMode="Required">
@@ -61,7 +62,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MediumScreenWidth}"/>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        
+
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -99,15 +100,18 @@
                             Command="{Binding Path=GoToPreviousEpisodeCommand}" />
 
                     <StackPanel Grid.Column="1">
-                        <TextBlock x:Name="ShowNameText"
-                                   Text="{Binding Episode.Show.Name}"
-                                   Style="{StaticResource HeaderTextBlockStyle}"
-                                   FontWeight="Bold" Margin="5" HorizontalAlignment="Center"
-                                   TextAlignment="Center"
-                                   Foreground="{StaticResource PrimaryWhite}" />
+                        <HyperlinkButton x:Name="ShowNameText"
+                                         Content="{Binding Path=Episode.Show.Name}"
+                                         FontWeight="Bold" Margin="5"
+                                         HorizontalAlignment="Center"
+                                         FontSize="48" FontStyle="Normal"
+                                         Foreground="{StaticResource PrimaryWhite}"
+                                         Style="{StaticResource TitleLinkStyle}"
+                                         Command="{Binding Path=SelectShowCommand}"
+                                         CommandParameter="{Binding Path=Episode}" />
 
                         <TextBlock x:Name="EpisodeNameText" 
-                                   Text="{Binding Episode.Name}"
+                                   Text="{Binding Path=Episode.Name}"
                                    Style="{StaticResource SubheaderTextBlockStyle}"
                                    FontWeight="SemiLight" Margin="5" HorizontalAlignment="Center"
                                    TextAlignment="Center"
@@ -159,7 +163,7 @@
                             Visibility="{Binding Path=Episode.NextEpisode, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
                             Command="{Binding Path=GoToNextEpisodeCommand}" />
                 </Grid>
-                
+
                 <!-- Description (air date, overview) -->
                 <Grid>
                     <Grid x:Name="FrostedGlassPanel" />

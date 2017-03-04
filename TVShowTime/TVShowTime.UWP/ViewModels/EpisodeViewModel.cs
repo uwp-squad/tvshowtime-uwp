@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Model.Requests;
@@ -20,6 +22,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IEventService _eventService;
+        private IHamburgerMenuService _hamburgerMenuService;
 
         #endregion
 
@@ -41,6 +44,7 @@ namespace TVShowTime.UWP.ViewModels
         public ICommand GoToPreviousEpisodeCommand { get; }
         public ICommand GoToNextEpisodeCommand { get; }
         public ICommand ToggleEmotionCommand { get; }
+        public ICommand SelectShowCommand { get; }
 
         #endregion
 
@@ -48,15 +52,18 @@ namespace TVShowTime.UWP.ViewModels
 
         public EpisodeViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
-            IEventService eventService)
+            IEventService eventService,
+            IHamburgerMenuService hamburgerMenuService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _eventService = eventService;
+            _hamburgerMenuService = hamburgerMenuService;
 
             ToggleWatchCommand = new RelayCommand(ToggleWatch);
             GoToPreviousEpisodeCommand = new RelayCommand(GoToPreviousEpisode);
             GoToNextEpisodeCommand = new RelayCommand(GoToNextEpisode);
             ToggleEmotionCommand = new RelayCommand<Emotion>(ToggleEmotion);
+            SelectShowCommand = new RelayCommand<Episode>(SelectShow);
         }
 
         #endregion
@@ -144,6 +151,12 @@ namespace TVShowTime.UWP.ViewModels
                         throw new Exception();
                     });
             }
+        }
+
+        private void SelectShow(Episode episode)
+        {
+            ServiceLocator.Current.GetInstance<ShowViewModel>().LoadShow(episode.Show.Id);
+            _hamburgerMenuService.NavigateTo(ViewConstants.Show);
         }
 
         #endregion

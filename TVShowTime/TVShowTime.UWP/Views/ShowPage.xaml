@@ -5,11 +5,60 @@
     xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
+    xmlns:behaviors="using:Microsoft.Toolkit.Uwp.UI.Animations.Behaviors" 
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d"
     DataContext="{Binding Show, Source={StaticResource Locator}}"
     NavigationCacheMode="Required">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!-- Background image -->
+        <Grid>
+            <controls:ImageEx x:Name="BackgroundImage" 
+                              Source="{Binding Path=Show.AllImages.Posters.Zero}"
+                              IsCacheEnabled="True"
+                              PlaceholderSource="/Images/default-poster.png"
+                              VerticalAlignment="Center" HorizontalAlignment="Center"
+                              Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
 
+            <interactivity:Interaction.Behaviors>
+                <behaviors:Blur Value="15" />
+            </interactivity:Interaction.Behaviors>
+        </Grid>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Header (show name) -->
+                <TextBlock x:Name="ShowNameText"
+                           Text="{Binding Path=Show.Name}"
+                           Style="{StaticResource HeaderTextBlockStyle}"
+                           FontWeight="Bold" Margin="5" HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource PrimaryWhite}" />
+
+                <!-- Description (overview) -->
+                <Grid>
+                    <Grid x:Name="FrostedGlassPanel" />
+
+                    <StackPanel x:Name="DescriptionPanel" Padding="40">
+                        <TextBlock Foreground="{StaticResource PrimaryBlack}" FontWeight="Bold">
+                            <Run Text="{Binding Path=Show.Status}" />
+                            <Run Text="|" />
+                            <Run Text="{Binding Path=Show.NumberOfSeasons}" />
+                            <Run Text="season(s)" />
+                            <Run Text="|" />
+                            <Run Text="{Binding Path=Show.NumberOfFollowers}" />
+                            <Run Text="follower(s)" />
+                        </TextBlock>
+
+                        <TextBlock x:Name="OverviewText" Text="{Binding Path=Show.Overview}"
+                                   Margin="0 10 0 0"
+                                   TextWrapping="WrapWholeWords"
+                                   Foreground="{StaticResource PrimaryBlack}" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
