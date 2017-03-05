@@ -8,9 +8,9 @@ using TVShowTimeApi.Model;
 
 namespace TVShowTime.UWP.Models
 {
-    public class AgendaGroup
+    public class ShowCollectionGroup
     {
-        public DateTime Date { get; set; }
-        public ObservableCollection<Episode> Episodes { get; } = new ObservableCollection<Episode>();
+        public string Name { get; set; }
+        public ObservableCollection<Show> Shows { get; } = new ObservableCollection<Show>();
     }
 }

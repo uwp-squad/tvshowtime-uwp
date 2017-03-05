@@ -124,10 +124,12 @@
     <Compile Include="Models\MenuItemType.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
     <Compile Include="Models\ScrollDirection.cs" />
+    <Compile Include="Models\ShowCollectionGroup.cs" />
     <Compile Include="Models\UserConnnectionProfile.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\HamburgerMenuService.cs" />
     <Compile Include="ViewModels\AgendaViewModel.cs" />
+    <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\EpisodeViewModel.cs" />
     <Compile Include="ViewModels\ExploreViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -137,6 +139,9 @@
     <Compile Include="ViewModels\UpcomingViewModel.cs" />
     <Compile Include="Views\AgendaPage.xaml.cs">
       <DependentUpon>AgendaPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CollectionPage.xaml.cs">
+      <DependentUpon>CollectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EpisodePage.xaml.cs">
       <DependentUpon>EpisodePage.xaml</DependentUpon>
@@ -237,6 +242,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AgendaPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CollectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

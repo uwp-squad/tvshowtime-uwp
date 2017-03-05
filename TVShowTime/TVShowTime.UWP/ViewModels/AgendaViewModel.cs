@@ -121,11 +121,7 @@ namespace TVShowTime.UWP.ViewModels
                             // Create a new group if necessary
                             if (group == null)
                             {
-                                group = new AgendaGroup
-                                {
-                                    Date = episode.AirDate.Value,
-                                    Episodes = new ObservableCollection<Episode>()
-                                };
+                                group = new AgendaGroup { Date = episode.AirDate.Value };
                                 int index = Groups.Count(g => g.Date < episode.AirDate.Value);
 
                                 Groups.Insert(index, group);

@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="TVShowTime.UWP.Views.CollectionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TVShowTime.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:apimodels="using:TVShowTimeApi.Model"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    mc:Ignorable="d"
+    DataContext="{Binding Collection, Source={StaticResource Locator}}"
+    NavigationCacheMode="Required">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="ShowCollection" IsSourceGrouped="true" 
+                              Source="{Binding Path=Groups}" ItemsPath="Shows" />
+        
+        <DataTemplate x:Key="ShowTemplate" x:DataType="apimodels:Show">
+            <controls:DropShadowPanel Margin="8 16" BlurRadius="10.0" ShadowOpacity="0.3">
+                <Grid Background="{StaticResource PrimaryWhite}" Padding="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <controls:ImageEx Grid.Row="0"
+                                      Source="{Binding Path=AllImages.Posters.Zero}"
+                                      IsCacheEnabled="True"
+                                      PlaceholderSource="/Images/default-poster.png"
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"
+                                      Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
+
+                    <TextBlock Grid.Row="1" 
+                               Margin="0 4 0 2"
+                               Text="{Binding Path=Name}"
+                               Foreground="{StaticResource PrimaryBlack}"
+                               FontSize="14" FontWeight="SemiBold"
+                               HorizontalAlignment="Stretch"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </controls:DropShadowPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="HeaderGroupTemplate">
+            <TextBlock FontSize="42">
+                <Run Text="{Binding Path=Name}" />
+                <Run Text="(" /><Run Text="{Binding Path=Shows.Count}" /><Run Text=")" />
+            </TextBlock>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShowCollectionGroupTemplate">
+            <TextBlock FontSize="42" Foreground="{StaticResource PrimaryGray}" Margin="0 10">
+                <Run Text="{Binding Path=Group.Name}" />
+                <Run Text="(" /><Run Text="{Binding Path=Group.Shows.Count}" /><Run Text=")" />
+            </TextBlock>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <SemanticZoom ScrollViewer.ZoomMode="Disabled">
+            <SemanticZoom.ZoomedOutView>
+                <ListView ItemsSource="{Binding Path=CollectionGroups, Source={StaticResource ShowCollection}}"
+                          SelectionMode="None"
+                          ItemTemplate="{StaticResource ShowCollectionGroupTemplate}" />
+            </SemanticZoom.ZoomedOutView>
+
+            <SemanticZoom.ZoomedInView>
+                <controls:AdaptiveGridView x:Name="ShowsGridView" 
+                                           ItemsSource="{Binding Source={StaticResource ShowCollection}}"
+                                           ItemTemplate="{StaticResource ShowTemplate}"
+                                           ItemClickCommand="{Binding Path=SelectShowCommand}"
+                                           SelectionMode="None"
+                                           DesiredWidth="200"
+                                           IsItemClickEnabled="True"
+                                           animations:ReorderGridAnimation.Duration="250">
+                    <GridView.GroupStyle>
+                        <GroupStyle HeaderTemplate="{StaticResource HeaderGroupTemplate}" />
+                    </GridView.GroupStyle>
+                </controls:AdaptiveGridView>
+            </SemanticZoom.ZoomedInView>
+        </SemanticZoom>
+    </Grid>
+</Page>

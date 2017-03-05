@@ -80,6 +80,13 @@ namespace TVShowTime.UWP.Services
                     Type = MenuItemType.Main,
                     PageType = typeof(ExplorePage)
                 },
+                new NavigationMenuItem
+                {
+                    Symbol = Symbol.Library,
+                    Name = "Collection",
+                    Type = MenuItemType.Main,
+                    PageType = typeof(CollectionPage)
+                },
                 new ActionMenuItem
                 {
                     Glyph = "\uE7E8",

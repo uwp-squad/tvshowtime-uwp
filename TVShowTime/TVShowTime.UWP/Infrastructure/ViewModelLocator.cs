@@ -59,6 +59,7 @@ namespace TVShowTime.UWP.Infrastructure
 
             // Register ViewModels
             SimpleIoc.Default.Register<AgendaViewModel>();
+            SimpleIoc.Default.Register<CollectionViewModel>();
             SimpleIoc.Default.Register<EpisodeViewModel>();
             SimpleIoc.Default.Register<ExploreViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
@@ -89,6 +90,11 @@ namespace TVShowTime.UWP.Infrastructure
         public AgendaViewModel Agenda
         {
             get { return ServiceLocator.Current.GetInstance<AgendaViewModel>(); }
+        }
+
+        public CollectionViewModel Collection
+        {
+            get { return ServiceLocator.Current.GetInstance<CollectionViewModel>(); }
         }
 
         public EpisodeViewModel Episode
