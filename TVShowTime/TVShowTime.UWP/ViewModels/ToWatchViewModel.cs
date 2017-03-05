@@ -98,7 +98,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private void Refresh()
         {
-            _tvshowtimeApiService.GetWatchlist(0, 50)
+            _tvshowtimeApiService.GetWatchlist(0, 0)
                 .Subscribe(async (watchlistResponse) =>
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
