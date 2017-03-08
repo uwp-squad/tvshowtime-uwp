@@ -18,41 +18,41 @@ namespace TVShowTime.UWP.BackgroundTasks
     {
         #region Public methods
 
-        public void Run(IBackgroundTaskInstance taskInstance)
+        public async void Run(IBackgroundTaskInstance taskInstance)
         {
             // Retrieve token to access API
             string token = RetrieveToken();
 
             // Create services
             var localObjectStorageHelper = new LocalObjectStorageHelper();
-            var tvshowtimeApiService = new ReactiveTVShowTimeApiService(token);
+            var tvshowtimeApiService = new TVShowTimeApiService(token);
 
             // Retrieve episodes from the agenda (episodes that will be aired soon)
-            tvshowtimeApiService.GetAgenda()
-                .Subscribe(async (agendaResponse) =>
+            var agendaResponse = await tvshowtimeApiService.GetAgendaAsync();
+            if (agendaResponse.Result == "OK")
+            {
+                // Retrieve list of episodes already selected
+                var newEpisodesIdsSelected = new List<long>();
+
+                if (await localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.NewEpisodesIdsSelected))
                 {
-                    // Retrieve list of episodes already selected
-                    var newEpisodesIdsSelected = new List<long>();
+                    await localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, new List<long>());
+                }
 
-                    if (await localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.NewEpisodesIdsSelected))
+                var episodesInAgenda = agendaResponse.Episodes;
+                foreach (var episode in episodesInAgenda)
+                {
+                    if (episode.AirDate.HasValue && episode.AirDate > DateTime.Now && newEpisodesIdsSelected.All(id => episode.Id != id))
                     {
-                        await localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, new List<long>());
+                        // Create Toast notification when a new episode is out
+                        GenerateToastNotification(episode);
+                        newEpisodesIdsSelected.Add(episode.Id);
                     }
+                }
 
-                    var episodesInAgenda = agendaResponse.Episodes;
-                    foreach (var episode in episodesInAgenda)
-                    {
-                        if (episode.AirDate.HasValue && episode.AirDate > DateTime.Now && newEpisodesIdsSelected.All(id => episode.Id != id))
-                        {
-                            // Create Toast notification when a new episode is out
-                            GenerateToastNotification(episode);
-                            newEpisodesIdsSelected.Add(episode.Id);
-                        }
-                    }
-
-                    // Save the updated list in local storage
-                    await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, newEpisodesIdsSelected);
-                });
+                // Save the updated list in local storage
+                await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, newEpisodesIdsSelected);
+            }
         }
 
         #endregion

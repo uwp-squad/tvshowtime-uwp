@@ -49,7 +49,7 @@ namespace TVShowTime.UWP.Views
             base.OnNavigatedTo(e);
             
             // Style title bar (Desktop)
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
+            if (ApiInformation.IsTypePresent("Windows.ApplicationModel.Core"))
             {
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = false;
             }

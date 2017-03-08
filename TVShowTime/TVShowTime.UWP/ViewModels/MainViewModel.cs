@@ -50,7 +50,7 @@ namespace TVShowTime.UWP.ViewModels
             {
                 BackgroundTaskHelper.Register(
                     nameof(NewEpisodesBackgroundTask),
-                    new TimeTrigger(120, false),
+                    new TimeTrigger(30, false),
                     conditions: new SystemCondition(SystemConditionType.InternetAvailable)
                 );
             }
