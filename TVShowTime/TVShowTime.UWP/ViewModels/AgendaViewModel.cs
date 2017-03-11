@@ -2,13 +2,9 @@
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Toolkit.Uwp;
-using Microsoft.Toolkit.Uwp.UI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Models;
@@ -100,7 +96,7 @@ namespace TVShowTime.UWP.ViewModels
         {
             _isLoadingAgenda = true;
 
-            _tvshowtimeApiService.GetAgenda(page)
+            _tvshowtimeApiService.GetAgenda(page, 10, true)
                 .Subscribe(async (agendaResponse) =>
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
