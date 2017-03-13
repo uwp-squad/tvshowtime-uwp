@@ -25,22 +25,6 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Grid Visibility="{Binding Path=IsNew}"
-                          Canvas.ZIndex="1"
-                          VerticalAlignment="Top" HorizontalAlignment="Left"
-                          Height="50">
-                        <Polygon Fill="{StaticResource PrimaryYellow}"
-                                 Points="0,0, 50,0, 0,50" />
-
-                        <TextBlock Text="NEW" FontSize="11" 
-                                   Foreground="{StaticResource PrimaryBlack}"
-                                   RenderTransformOrigin="0.5,0.5">
-                            <TextBlock.RenderTransform>
-                                <CompositeTransform Rotation="-45" TranslateX="13" TranslateY="-4" />
-                            </TextBlock.RenderTransform>
-                        </TextBlock>
-                    </Grid>
-
                     <controls:ImageEx Grid.Row="0"
                                       Source="{Binding Path=Show.Images.Posters.Zero}"
                                       IsCacheEnabled="True"

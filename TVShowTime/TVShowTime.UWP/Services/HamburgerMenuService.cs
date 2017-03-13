@@ -57,7 +57,6 @@ namespace TVShowTime.UWP.Services
                     Type = MenuItemType.Main,
                     PageType = typeof(ToWatchPage)
                 },
-#if false
                 new NavigationMenuItem
                 {
                     Symbol = Symbol.Clock,
@@ -65,7 +64,6 @@ namespace TVShowTime.UWP.Services
                     Type = MenuItemType.Main,
                     PageType = typeof(UpcomingPage)
                 },
-#endif
                 new NavigationMenuItem
                 {
                     Symbol = Symbol.Calendar,

@@ -5,9 +5,61 @@
     xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:apimodels="using:TVShowTimeApi.Model"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     mc:Ignorable="d"
     DataContext="{Binding Upcoming, Source={StaticResource Locator}}"
     NavigationCacheMode="Required">
+
+    <Page.Resources>
+        <DataTemplate x:Key="EpisodeTemplate" x:DataType="apimodels:Episode">
+            <controls:DropShadowPanel Margin="8 16" BlurRadius="10.0" ShadowOpacity="0.3">
+                <Grid Background="{StaticResource PrimaryWhite}" Padding="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <controls:ImageEx Grid.Row="0"
+                                      Source="{Binding Path=Show.Images.Posters.Zero}"
+                                      IsCacheEnabled="True"
+                                      PlaceholderSource="/Images/default-poster.png"
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"
+                                      Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
+
+                    <Grid Grid.Row="0"
+                          Background="Black" Opacity="0.5" />
+
+                    <Grid Grid.Row="0">
+                        <TextBlock Text="{Binding Path=DiffTime}" 
+                                   TextAlignment="Center"
+                                   Foreground="White" FontWeight="SemiBold" FontSize="20" LineHeight="30"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <TextBlock Grid.Row="1"
+                               Margin="0 4 0 2"
+                               FontWeight="Bold" Foreground="{StaticResource PrimaryBlack}"
+                               FontSize="14"
+                               HorizontalAlignment="Stretch"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
+                        <Run Text="Season" />
+                        <Run Text="{Binding Path=Season}" />
+                        <Run Text="Episode" />
+                        <Run Text="{Binding Path=Number}" />
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="2" Text="{Binding Path=Show.Name}"
+                               Foreground="{StaticResource PrimaryBlack}"
+                               FontSize="12"
+                               HorizontalAlignment="Stretch"
+                               TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                </Grid>
+            </controls:DropShadowPanel>
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
@@ -20,5 +72,14 @@
                    Style="{StaticResource TitleTextBlockStyle}">
             <Run Text="Upcoming episodes (" /><Run Text="{Binding Path=Episodes.Count}" /><Run Text=")" />
         </TextBlock>
+
+        <controls:AdaptiveGridView Grid.Row="1" x:Name="AdaptiveGridViewControl"
+                                   ItemsSource="{Binding Path=Episodes}"
+                                   SelectionMode="None"
+                                   DesiredWidth="200"
+                                   ItemTemplate="{StaticResource EpisodeTemplate}"
+                                   IsItemClickEnabled="True"
+                                   ItemClickCommand="{Binding Path=SelectEpisodeCommand}"
+                                   animations:ReorderGridAnimation.Duration="250" />
     </Grid>
 </Page>
