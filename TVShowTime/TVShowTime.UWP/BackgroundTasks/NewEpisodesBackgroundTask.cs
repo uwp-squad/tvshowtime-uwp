@@ -3,7 +3,6 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TVShowTime.UWP.Constants;
 using TVShowTimeApi.Model;
@@ -14,11 +13,11 @@ using Windows.UI.Notifications;
 
 namespace TVShowTime.UWP.BackgroundTasks
 {
-    public class NewEpisodesBackgroundTask : IBackgroundTask
+    public class NewEpisodesBackgroundTask : ISingleProcessBackgroundTask
     {
         #region Public methods
 
-        public async void Run(IBackgroundTaskInstance taskInstance)
+        public async Task RunAsync(IBackgroundTaskInstance taskInstance)
         {
             // Retrieve token to access API
             string token = RetrieveToken();

@@ -1,28 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using TVShowTime.UWP.Views;
-using Windows.UI;
 using Microsoft.QueryStringDotNET;
 using TVShowTime.UWP.Constants;
 using Microsoft.Practices.ServiceLocation;
 using TVShowTime.UWP.ViewModels;
 using Microsoft.Toolkit.Uwp;
-using Windows.ApplicationModel.Background;
 using System.Reflection;
+using TVShowTime.UWP.BackgroundTasks;
+using System.Threading.Tasks;
 
 namespace TVShowTime.UWP
 {
@@ -157,10 +148,10 @@ namespace TVShowTime.UWP
         /// 
         /// </summary>
         /// <param name="args"></param>
-        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        protected override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
-            HandleBackgroundTaskActivation(args, typeof(App));
+            await HandleBackgroundTaskActivationAsync(args, typeof(App));
         }
         
         #endregion
@@ -192,7 +183,7 @@ namespace TVShowTime.UWP
             }
         }
 
-        private void HandleBackgroundTaskActivation(BackgroundActivatedEventArgs args, Type appType)
+        private async Task HandleBackgroundTaskActivationAsync(BackgroundActivatedEventArgs args, Type appType)
         {
             var deferral = args.TaskInstance.GetDeferral();
 
@@ -203,8 +194,8 @@ namespace TVShowTime.UWP
 
             if (type != null)
             {
-                var task = Activator.CreateInstance(type) as IBackgroundTask;
-                task.Run(args.TaskInstance);
+                var task = Activator.CreateInstance(type) as ISingleProcessBackgroundTask;
+                await task.RunAsync(args.TaskInstance);
             }
 
             deferral.Complete();

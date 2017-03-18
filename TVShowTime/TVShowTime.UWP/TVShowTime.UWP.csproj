@@ -99,6 +99,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTasks\ISingleProcessBackgroundTask.cs" />
     <Compile Include="BackgroundTasks\NewEpisodesBackgroundTask.cs" />
     <Compile Include="Configuration\AuthConstants.cs" />
     <Compile Include="Constants\LocalStorageConstants.cs" />
