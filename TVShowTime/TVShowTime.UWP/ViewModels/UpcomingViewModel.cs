@@ -87,11 +87,7 @@ namespace TVShowTime.UWP.ViewModels
                             // Do not add episode if already aired
                             if (episode.AirDate < DateTime.Now)
                                 continue;
-
-                            // Do not add episode if the user did not see the previous ones
-                            if (episode.Show.SeenEpisodes != episode.Show.AiredEpisodes)
-                                continue;
-
+                            
                             string diffTime = string.Empty;
                             var timeSpanDiff = episode.AirDate.Value.Subtract(DateTime.Now.ToUniversalTime());
                             if (episode.AirTime.HasValue)
