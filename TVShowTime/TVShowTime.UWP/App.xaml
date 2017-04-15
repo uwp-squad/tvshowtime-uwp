@@ -38,6 +38,8 @@
             <converters:DateToTodayColorConverter x:Key="DateToTodayColorConverter" />
             <converters:DateToMonthStringConverter x:Key="DateToMonthStringConverter" />
             <converters:DateToTimelineStringConverter x:Key="DateToTimelineStringConverter" />
+            <converters:FeedbackCardStateToStringConverter x:Key="FeedbackCardStateToStringConverter" />
+            <converters:FeedbackCardStateToColorConverter x:Key="FeedbackCardStateToColorConverter" />
 
             <!-- Styles -->
             <Style TargetType="GridViewItem">

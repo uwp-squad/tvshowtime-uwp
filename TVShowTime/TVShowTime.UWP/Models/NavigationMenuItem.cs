@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TVShowTime.UWP.Models
 {
-    public class NavigationMenuItem : SymbolMenuItem
+    public interface INavigationMenuItem
+    {
+        Type PageType { get; set; }
+    }
+
+    public class SymbolNavigationMenuItem : SymbolMenuItem, INavigationMenuItem
+    {
+        public Type PageType { get; set; }
+    }
+
+    public class GlyphNavigationMenuItem : GlyphMenuItem, INavigationMenuItem
     {
         public Type PageType { get; set; }
     }

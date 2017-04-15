@@ -1,11 +1,8 @@
 ﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Services.Store.Engagement;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TVShowTime.UWP.Models;
 using TVShowTime.UWP.ViewModels;
 using TVShowTime.UWP.Views;
@@ -50,70 +47,63 @@ namespace TVShowTime.UWP.Services
         {
             MenuItems = new List<MenuItem>
             {
-                new NavigationMenuItem
+                new SymbolNavigationMenuItem
                 {
                     Symbol = Symbol.List,
                     Name = "To Watch",
                     Type = MenuItemType.Main,
                     PageType = typeof(ToWatchPage)
                 },
-                new NavigationMenuItem
+                new SymbolNavigationMenuItem
                 {
                     Symbol = Symbol.Clock,
                     Name = "Upcoming",
                     Type = MenuItemType.Main,
                     PageType = typeof(UpcomingPage)
                 },
-                new NavigationMenuItem
+                new SymbolNavigationMenuItem
                 {
                     Symbol = Symbol.Calendar,
                     Name = "Agenda",
                     Type = MenuItemType.Main,
                     PageType = typeof(AgendaPage)
                 },
-                new NavigationMenuItem
+                new SymbolNavigationMenuItem
                 {
                     Symbol = Symbol.World,
                     Name = "Explore",
                     Type = MenuItemType.Main,
                     PageType = typeof(ExplorePage)
                 },
-                new NavigationMenuItem
+                new SymbolNavigationMenuItem
                 {
                     Symbol = Symbol.Library,
                     Name = "Collection",
                     Type = MenuItemType.Main,
                     PageType = typeof(CollectionPage)
-                },
-                new ActionMenuItem
-                {
-                    Glyph = "\uE7E8",
-                    Name = "Logout",
-                    Type = MenuItemType.Options,
-                    Action = () =>
-                    {
-                        ServiceLocator.Current.GetInstance<LoginViewModel>().Logout();
-                    }
-                }
+                }                
             };
 
-            if (StoreServicesFeedbackLauncher.IsSupported())
+            var feedbackMenuItem = new GlyphNavigationMenuItem
             {
-                var feedbackMenuItem = new ActionMenuItem
-                {
-                    Glyph = "\uE939",
-                    Name = "Feedback",
-                    Type = MenuItemType.Options,
-                    Action = async () =>
-                    {
-                        await StoreServicesFeedbackLauncher.GetDefault().LaunchAsync();
+                Glyph = "\uE939",
+                Name = "Feedback",
+                Type = MenuItemType.Options,
+                PageType = typeof(FeedbackPage)
+            };
+            MenuItems.Add(feedbackMenuItem);
 
-                        var pageType = GetPageTypeByKey(_currentPageKey);
-                        ResetSelectedItem(pageType);
-                    }
-                };
-                MenuItems.Add(feedbackMenuItem);
-            }
+            var logoutMenuItem = new ActionMenuItem
+            {
+                Glyph = "\uE7E8",
+                Name = "Logout",
+                Type = MenuItemType.Options,
+                Action = () =>
+                {
+                    ServiceLocator.Current.GetInstance<LoginViewModel>().Logout();
+                }
+            };
+            MenuItems.Add(logoutMenuItem);
         }
 
         #endregion
@@ -193,7 +183,7 @@ namespace TVShowTime.UWP.Services
             // Retrieve item in the hamburger menu that will be selected
             var menuItem = MenuItems.FirstOrDefault(m =>
             {
-                return m is NavigationMenuItem navigationMenuItem &&
+                return m is INavigationMenuItem navigationMenuItem &&
                        navigationMenuItem.PageType == pageType;
             });
 

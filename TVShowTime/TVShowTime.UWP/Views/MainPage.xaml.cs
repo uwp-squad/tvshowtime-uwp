@@ -1,26 +1,17 @@
 ﻿using Microsoft.Practices.ServiceLocation;
 using Microsoft.Toolkit.Uwp.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Models;
 using TVShowTime.UWP.Services;
 using TVShowTime.UWP.ViewModels;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
@@ -127,7 +118,7 @@ namespace TVShowTime.UWP.Views
                 HamburgerMenuControl.IsPaneOpen = false;
             }
 
-            if (e.ClickedItem is NavigationMenuItem navigationMenuItem)
+            if (e.ClickedItem is INavigationMenuItem navigationMenuItem)
             {
                 ContentFrame.Navigate(navigationMenuItem.PageType);
             }
@@ -166,6 +157,7 @@ namespace TVShowTime.UWP.Views
             _hamburgerMenuService.Configure(ViewConstants.Collection, typeof(CollectionPage));
             _hamburgerMenuService.Configure(ViewConstants.Episode, typeof(EpisodePage));
             _hamburgerMenuService.Configure(ViewConstants.Explore, typeof(ExplorePage));
+            _hamburgerMenuService.Configure(ViewConstants.Feedback, typeof(FeedbackPage));
             _hamburgerMenuService.Configure(ViewConstants.Show, typeof(ShowPage));
             _hamburgerMenuService.Configure(ViewConstants.ToWatch, typeof(ToWatchPage));
             _hamburgerMenuService.Configure(ViewConstants.Upcoming, typeof(UpcomingPage));

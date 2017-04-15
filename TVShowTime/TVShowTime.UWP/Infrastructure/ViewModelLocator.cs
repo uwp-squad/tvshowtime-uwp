@@ -2,11 +2,6 @@
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Toolkit.Uwp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Services;
 using TVShowTime.UWP.ViewModels;
@@ -62,6 +57,7 @@ namespace TVShowTime.UWP.Infrastructure
             SimpleIoc.Default.Register<CollectionViewModel>();
             SimpleIoc.Default.Register<EpisodeViewModel>();
             SimpleIoc.Default.Register<ExploreViewModel>();
+            SimpleIoc.Default.Register<FeedbackViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ShowViewModel>();
@@ -105,6 +101,11 @@ namespace TVShowTime.UWP.Infrastructure
         public ExploreViewModel Explore
         {
             get { return ServiceLocator.Current.GetInstance<ExploreViewModel>(); }
+        }
+
+        public FeedbackViewModel Feedback
+        {
+            get { return ServiceLocator.Current.GetInstance<FeedbackViewModel>(); }
         }
 
         public LoginViewModel Login
