@@ -116,11 +116,15 @@
     <Compile Include="Converters\DateToTodayColorConverter.cs" />
     <Compile Include="Converters\DecimalToDoubleConverter.cs" />
     <Compile Include="Converters\EmotionValueToBoolConverter.cs" />
+    <Compile Include="Converters\FeedbackCardStateToColorConverter.cs" />
+    <Compile Include="Converters\FeedbackCardStateToStringConverter.cs" />
     <Compile Include="Converters\NullableBoolInvertedToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Models\ActionMenuItem.cs" />
     <Compile Include="Models\AgendaGroup.cs" />
+    <Compile Include="Models\FeedbackCard.cs" />
+    <Compile Include="Models\FeedbackCardState.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\MenuItemType.cs" />
     <Compile Include="Models\NavigationMenuItem.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="ViewModels\CollectionViewModel.cs" />
     <Compile Include="ViewModels\EpisodeViewModel.cs" />
     <Compile Include="ViewModels\ExploreViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ShowViewModel.cs" />
@@ -149,6 +154,9 @@
     </Compile>
     <Compile Include="Views\ExplorePage.xaml.cs">
       <DependentUpon>ExplorePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FeedbackPage.xaml.cs">
+      <DependentUpon>FeedbackPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -255,6 +263,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ExplorePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FeedbackPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

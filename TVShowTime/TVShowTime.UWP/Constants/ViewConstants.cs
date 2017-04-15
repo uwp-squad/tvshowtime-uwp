@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TVShowTime.UWP.Constants
+﻿namespace TVShowTime.UWP.Constants
 {
     public static class ViewConstants
     {
@@ -12,6 +6,7 @@ namespace TVShowTime.UWP.Constants
         public const string Collection = "Collection";
         public const string Episode = "Episode";
         public const string Explore = "Explore";
+        public const string Feedback = "Feedback";
         public const string Login = "Login";
         public const string Main = "Main";
         public const string Show = "Show";
