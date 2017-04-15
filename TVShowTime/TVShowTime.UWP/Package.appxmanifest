@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="52948UWPSquad.TVShowTimeforWindows10" Publisher="CN=B5A51140-57FE-4916-AA2F-B845CF354C06" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="261c4551-c32f-4a84-b9d2-c7dd63b291d0" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="52948UWPSquad.TVShowTimeforWindows10" Publisher="CN=B5A51140-57FE-4916-AA2F-B845CF354C06" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="0e568f39-f801-4bad-9ea8-c8c029518f13" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>TVShow Time for Windows 10</DisplayName>
     <PublisherDisplayName>UWP Squad</PublisherDisplayName>
