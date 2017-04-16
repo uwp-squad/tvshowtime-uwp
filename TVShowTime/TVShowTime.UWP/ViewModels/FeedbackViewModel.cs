@@ -56,6 +56,13 @@ namespace TVShowTime.UWP.ViewModels
                 State = FeedbackCardState.NeedVotes,
                 Link = "http://support.tvshowtime.com/forums/172228-general/suggestions/18766096-create-api-endpoint-to-retrieve-upcoming-episodes"
             });
+            Cards.Add(new FeedbackCard
+            {
+                Title = "Search TV shows",
+                Description = "Add ability to retrieve TV shows by their names.",
+                State = FeedbackCardState.NeedVotes,
+                Link = "http://support.tvshowtime.com/forums/172228-general/suggestions/18950398-search-tv-shows"
+            });
 
             Cards.Add(new FeedbackCard
             {
