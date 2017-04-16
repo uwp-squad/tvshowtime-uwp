@@ -5,7 +5,6 @@
     xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     mc:Ignorable="d"
     DataContext="{Binding Login, Source={StaticResource Locator}}">
 
@@ -86,9 +85,9 @@
             <Grid x:Name="FrostedGlassPanel" />
 
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40">
-                <controls:ImageEx x:Name="LogoImage" Source="/Images/logo.png" 
-                                  IsCacheEnabled="True"
-                                  Width="100" Height="100" />
+                <Image x:Name="LogoImage"
+                       Stretch="UniformToFill" Source="/Images/logo.png"
+                       Width="100" Height="100" />
 
                 <Grid x:Name="MiddleGrid" Margin="0 40">
                     <StackPanel Visibility="{Binding Path=LoginFailed}">
