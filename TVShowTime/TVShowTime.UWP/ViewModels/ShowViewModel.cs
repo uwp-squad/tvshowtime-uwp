@@ -1,10 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Uwp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Services;
@@ -13,7 +9,6 @@ namespace TVShowTime.UWP.ViewModels
 {
     public class ShowViewModel : ViewModelBase
     {
-
         #region Fields
 
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;

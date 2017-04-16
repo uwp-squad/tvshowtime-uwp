@@ -55,9 +55,9 @@
                                 PaneBackground="{StaticResource PrimaryBlack}"
                                 Foreground="{StaticResource PrimaryGray}"
                                 ItemClick="OnMenuItemClick"
-                                ItemTemplate="{StaticResource SymbolMenuItemTemplate}"
+                                ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
                                 OptionsItemClick="OnMenuItemClick"
-                                OptionsItemTemplate="{StaticResource GlyphMenuItemTemplate}">
+                                OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}">
             <Frame x:Name="ContentFrame">
                 <Frame.ContentTransitions>
                     <TransitionCollection>

@@ -19,5 +19,10 @@ namespace TVShowTime.UWP.Constants
         /// Key of the item (EpisodeId) that will be used to navigate to <see cref="EpisodePage"/>
         /// </summary>
         public const string NavigateToEpisode = "navigateToEpisode";
+
+        /// <summary>
+        /// Key of the option to enable new episode notifications <see cref="NewEpisodesV2BackgroundTask"/>
+        /// </summary>
+        public const string EnableNewEpisodeNotificationsOption = "enableNewEpisodeNotificationsOption";
     }
 }

@@ -6,6 +6,7 @@
     xmlns:inf="using:TVShowTime.UWP.Infrastructure"
     xmlns:converters="using:TVShowTime.UWP.Converters"
     xmlns:uwpconverters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+    xmlns:templates="using:TVShowTime.UWP.Templates"
     RequestedTheme="Light">
 
     <Application.Resources>
@@ -698,6 +699,11 @@
                                FontSize="16" VerticalAlignment="Center" Foreground="White" />
                 </Grid>
             </DataTemplate>
+            
+            <!-- Template Selector -->
+            <templates:MenuItemTemplateSelector x:Key="MenuItemTemplateSelector"
+                                                SymbolMenuItemTemplate="{StaticResource SymbolMenuItemTemplate}"
+                                                GlyphMenuItemTemplate="{StaticResource GlyphMenuItemTemplate}" />
         </ResourceDictionary>
     </Application.Resources>
 

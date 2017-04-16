@@ -19,11 +19,20 @@ namespace TVShowTime.UWP.BackgroundTasks
 
         public async Task RunAsync(IBackgroundTaskInstance taskInstance)
         {
+            // Create services
+            var localObjectStorageHelper = new LocalObjectStorageHelper();
+
+            // Check if notifications are enabled
+            var notificationsEnabled = localObjectStorageHelper.Read(LocalStorageConstants.EnableNewEpisodeNotificationsOption, true);
+            if (!notificationsEnabled)
+            {
+                return;
+            }
+
             // Retrieve token to access API
             string token = RetrieveToken();
 
-            // Create services
-            var localObjectStorageHelper = new LocalObjectStorageHelper();
+            // Create services (2)
             var tvshowtimeApiService = new TVShowTimeApiService(token);
 
             // Retrieve episodes from the agenda (episodes that will be aired soon)

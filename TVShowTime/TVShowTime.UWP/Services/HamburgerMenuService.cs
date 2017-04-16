@@ -84,6 +84,15 @@ namespace TVShowTime.UWP.Services
                 }                
             };
 
+            var settingsMenuItem = new SymbolNavigationMenuItem
+            {
+                Symbol = Symbol.Setting,
+                Name = "Settings",
+                Type = MenuItemType.Options,
+                PageType = typeof(SettingsPage)
+            };
+            MenuItems.Add(settingsMenuItem);
+
             var feedbackMenuItem = new GlyphNavigationMenuItem
             {
                 Glyph = "\uE939",
