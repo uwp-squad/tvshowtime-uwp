@@ -60,6 +60,7 @@ namespace TVShowTime.UWP.Infrastructure
             SimpleIoc.Default.Register<FeedbackViewModel>();
             SimpleIoc.Default.Register<LoginViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
             SimpleIoc.Default.Register<ShowViewModel>();
             SimpleIoc.Default.Register<ToWatchViewModel>();
             SimpleIoc.Default.Register<UpcomingViewModel>();
@@ -116,6 +117,11 @@ namespace TVShowTime.UWP.Infrastructure
         public MainViewModel Main
         {
             get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
+        }
+
+        public SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
         }
 
         public ShowViewModel Show
