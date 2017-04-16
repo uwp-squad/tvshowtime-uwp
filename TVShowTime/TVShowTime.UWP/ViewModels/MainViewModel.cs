@@ -2,11 +2,6 @@
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Practices.ServiceLocation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TVShowTime.UWP.BackgroundTasks;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Services;
@@ -45,12 +40,18 @@ namespace TVShowTime.UWP.ViewModels
 
         private void RegisterBackgroundTasks()
         {
-            // Check if Background Task is already registered
-            if (!BackgroundTaskHelper.IsBackgroundTaskRegistered(typeof(NewEpisodesBackgroundTask)))
+            // Remove old Background Tasks
+            if (BackgroundTaskHelper.IsBackgroundTaskRegistered("NewEpisodesBackgroundTask"))
+            {
+                BackgroundTaskHelper.Unregister("NewEpisodesBackgroundTask");
+            }
+
+            // Check if Background Task is already registered and register new ones
+            if (!BackgroundTaskHelper.IsBackgroundTaskRegistered(typeof(NewEpisodesV2BackgroundTask)))
             {
                 BackgroundTaskHelper.Register(
-                    nameof(NewEpisodesBackgroundTask),
-                    new TimeTrigger(30, false),
+                    nameof(NewEpisodesV2BackgroundTask),
+                    new TimeTrigger(15, false),
                     conditions: new SystemCondition(SystemConditionType.InternetAvailable)
                 );
             }

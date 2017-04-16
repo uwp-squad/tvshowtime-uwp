@@ -13,7 +13,7 @@ using Windows.UI.Notifications;
 
 namespace TVShowTime.UWP.BackgroundTasks
 {
-    public class NewEpisodesBackgroundTask : ISingleProcessBackgroundTask
+    public class NewEpisodesV2BackgroundTask : ISingleProcessBackgroundTask
     {
         #region Public methods
 
@@ -30,27 +30,37 @@ namespace TVShowTime.UWP.BackgroundTasks
             var agendaResponse = await tvshowtimeApiService.GetAgendaAsync();
             if (agendaResponse.Result == "OK")
             {
-                // Retrieve list of episodes already selected
-                var newEpisodesIdsSelected = new List<long>();
-
-                if (await localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.NewEpisodesIdsSelected))
+                // Retrieve list of episodes already notified
+                var newEpisodesIdsNotified = new List<long>();
+                if (await localObjectStorageHelper.FileExistsAsync(LocalStorageConstants.NewEpisodesIdsNotified))
                 {
-                    await localObjectStorageHelper.ReadFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, new List<long>());
+                    newEpisodesIdsNotified = await localObjectStorageHelper
+                        .ReadFileAsync(LocalStorageConstants.NewEpisodesIdsNotified, new List<long>());
                 }
 
                 var episodesInAgenda = agendaResponse.Episodes;
                 foreach (var episode in episodesInAgenda)
                 {
-                    if (episode.AirDate.HasValue && episode.AirDate > DateTime.Now && newEpisodesIdsSelected.All(id => episode.Id != id))
+                    var timeSpanDiff = episode.AirDate.Value.Subtract(DateTime.Now.ToUniversalTime());
+                    if (episode.AirTime.HasValue)
+                    {
+                        timeSpanDiff = timeSpanDiff
+                            .Add(TimeSpan.FromHours(episode.AirTime.Value.DateTime.Hour));
+                        timeSpanDiff = timeSpanDiff
+                            .Add(TimeSpan.FromMinutes(episode.AirTime.Value.DateTime.Minute));
+                    }
+
+                    if (newEpisodesIdsNotified.All(id => episode.Id != id) &&
+                        timeSpanDiff.TotalDays <= 0)
                     {
                         // Create Toast notification when a new episode is out
                         GenerateToastNotification(episode);
-                        newEpisodesIdsSelected.Add(episode.Id);
+                        newEpisodesIdsNotified.Add(episode.Id);
                     }
                 }
 
                 // Save the updated list in local storage
-                await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsSelected, newEpisodesIdsSelected);
+                await localObjectStorageHelper.SaveFileAsync(LocalStorageConstants.NewEpisodesIdsNotified, newEpisodesIdsNotified);
             }
         }
 
@@ -116,15 +126,14 @@ namespace TVShowTime.UWP.BackgroundTasks
                 };
             }
 
-            // Create toast notification at due date
-            DateTime dueDateTime = episode.AirDate.Value;
-            var toastNotification = new ScheduledToastNotification(toastContent.GetXml(), dueDateTime)
+            // Create toast notification
+            var toastNotification = new ToastNotification(toastContent.GetXml())
             {
                 Group = episode.Show.Id.ToString()
             };
 
-            // Schedule toast notification
-            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+            // Show toast notification
+            ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
         }
 
         #endregion
