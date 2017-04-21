@@ -24,13 +24,19 @@ namespace TVShowTime.UWP.ViewModels
 
         private int _currentReversePage = 0;
         private int _currentPage = 0;
-        private bool _isLoadingAgenda = false;
 
         #endregion
 
         #region Properties
 
         public ObservableCollection<AgendaGroup> Groups { get; } = new ObservableCollection<AgendaGroup>();
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; RaisePropertyChanged(); }
+        }
 
         #endregion
 
@@ -72,7 +78,7 @@ namespace TVShowTime.UWP.ViewModels
 
         public void LoadPreviousPage()
         {
-            if (!_isLoadingAgenda)
+            if (!IsLoading)
             {
                 _currentReversePage--;
                 LoadAgendaPage(_currentReversePage);
@@ -81,7 +87,7 @@ namespace TVShowTime.UWP.ViewModels
 
         public void LoadNextPage()
         {
-            if (!_isLoadingAgenda)
+            if (!IsLoading)
             {
                 _currentPage++;
                 LoadAgendaPage(_currentPage);
@@ -94,7 +100,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private void LoadAgendaPage(int page)
         {
-            _isLoadingAgenda = true;
+            IsLoading = true;
 
             _tvshowtimeApiService.GetAgenda(page, 10, true)
                 .Subscribe(async (agendaResponse) =>
@@ -105,11 +111,11 @@ namespace TVShowTime.UWP.ViewModels
                         {
                             // Do not add an episode without air date
                             if (!episode.AirDate.HasValue)
-                                return;
+                                continue;
 
                             // Do not add the same episode twice
                             if (IsAlreadyAdded(episode))
-                                return;
+                                continue;
 
                             // Add episode to the corresponding group
                             var group = Groups.FirstOrDefault(g => g.Date == episode.AirDate);
@@ -126,11 +132,15 @@ namespace TVShowTime.UWP.ViewModels
                             group.Episodes.Add(episode);
                         }
 
-                        _isLoadingAgenda = false;
+                        IsLoading = false;
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

@@ -81,5 +81,14 @@
                                    IsItemClickEnabled="True"
                                    ItemClickCommand="{Binding Path=SelectEpisodeCommand}"
                                    animations:ReorderGridAnimation.Duration="250" />
+
+        <controls:Loading x:Name="LoadingControl" Grid.RowSpan="2"
+                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                          Background="{StaticResource PrimaryYellow}" Opacity="0.4"
+                          IsLoading="{Binding Path=IsLoading}">
+            <ContentControl x:Name="LoadingContentControl">
+                <TextBlock Text="Currently loading.." FontSize="24" />
+            </ContentControl>
+        </controls:Loading>
     </Grid>
 </Page>

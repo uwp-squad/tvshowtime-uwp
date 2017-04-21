@@ -27,6 +27,13 @@ namespace TVShowTime.UWP.ViewModels
 
         public ObservableCollection<Episode> Episodes { get; } = new ObservableCollection<Episode>();
 
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
         #endregion
 
         #region Commands
@@ -95,6 +102,8 @@ namespace TVShowTime.UWP.ViewModels
 
         private void Refresh()
         {
+            IsLoading = true;
+
             _tvshowtimeApiService.GetWatchlist(0, 0)
                 .Subscribe(async (watchlistResponse) =>
                 {
@@ -106,10 +115,16 @@ namespace TVShowTime.UWP.ViewModels
                         {
                             Episodes.Add(episode);
                         }
+
+                        IsLoading = false;
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

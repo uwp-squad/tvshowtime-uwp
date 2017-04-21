@@ -107,5 +107,14 @@
                 </controls:AdaptiveGridView>
             </SemanticZoom.ZoomedInView>
         </SemanticZoom>
+
+        <controls:Loading x:Name="LoadingControl" 
+                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                          Background="{StaticResource PrimaryYellow}" Opacity="0.4"
+                          IsLoading="{Binding Path=IsLoading}">
+            <ContentControl x:Name="LoadingContentControl">
+                <TextBlock Text="Currently loading.." FontSize="24" />
+            </ContentControl>
+        </controls:Loading>
     </Grid>
 </Page>

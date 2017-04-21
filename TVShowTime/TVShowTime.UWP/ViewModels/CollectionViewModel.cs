@@ -38,6 +38,13 @@ namespace TVShowTime.UWP.ViewModels
 
         public ObservableCollection<ShowCollectionGroup> Groups { get; } = new ObservableCollection<ShowCollectionGroup>();
 
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
         #endregion
 
         #region Commands
@@ -98,6 +105,8 @@ namespace TVShowTime.UWP.ViewModels
 
         private void LoadCollection()
         {
+            IsLoading = true;
+
             _tvshowtimeApiService.GetLibrary(_currentPage, _pageSize)
                 .Subscribe(async (libraryResponse) =>
                 {
@@ -139,10 +148,18 @@ namespace TVShowTime.UWP.ViewModels
                             _currentPage++;
                             LoadCollection();
                         }
+                        else
+                        {
+                            IsLoading = false;
+                        }
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

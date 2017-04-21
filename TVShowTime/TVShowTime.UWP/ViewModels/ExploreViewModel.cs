@@ -23,13 +23,27 @@ namespace TVShowTime.UWP.ViewModels
 
         private const int _pageSize = 5;
         private int _currentPage = 0;
-        private bool _isLoadingShows = false;
+        private int _currentIndex = 0;
 
         #endregion
 
         #region Properties
 
         public ObservableCollection<ExploreShowViewModel> Shows { get; } = new ObservableCollection<ExploreShowViewModel>();
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(ShowLoading));
+            }
+        }
+
+        public bool ShowLoading { get { return IsLoading && (Shows.Count - 1) == _currentIndex; } }
 
         #endregion
 
@@ -58,18 +72,21 @@ namespace TVShowTime.UWP.ViewModels
 
             LoadTrendingShows(_currentPage);
         }
-        
+
         #endregion
 
         #region Command Methods
 
         private void SelectionChanged(int currentIndex)
         {
-            if (!_isLoadingShows && (Shows.Count - _pageSize) <= currentIndex)
+            _currentIndex = currentIndex;
+            if (!IsLoading && (Shows.Count - _pageSize) <= _currentIndex)
             {
                 _currentPage++;
                 LoadTrendingShows(_currentPage);
             }
+
+            RaisePropertyChanged(nameof(ShowLoading));
         }
 
         private void ToggleFollowShow(ExploreShowViewModel show)
@@ -124,7 +141,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private void LoadTrendingShows(int page)
         {
-            _isLoadingShows = true;
+            IsLoading = true;
 
             _tvshowtimeApiService.GetTrendingShows(page, _pageSize)
                 .Subscribe(async (exploreResponse) =>
@@ -149,11 +166,15 @@ namespace TVShowTime.UWP.ViewModels
                             Shows.Add(exploreShowViewModel);
                         }
 
-                        _isLoadingShows = false;
+                        IsLoading = false;
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

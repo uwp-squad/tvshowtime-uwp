@@ -29,6 +29,13 @@ namespace TVShowTime.UWP.ViewModels
 
         public ObservableCollection<UpcomingEpisodeViewModel> Episodes { get; } = new ObservableCollection<UpcomingEpisodeViewModel>();
 
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
         #endregion
 
         #region Commands
@@ -73,6 +80,8 @@ namespace TVShowTime.UWP.ViewModels
 
         private void LoadUpcomingEpisodes()
         {
+            IsLoading = true;
+
             _tvshowtimeApiService.GetAgenda(_currentPage, _pageSize)
                 .Subscribe(async (agendaResponse) =>
                 {
@@ -146,10 +155,18 @@ namespace TVShowTime.UWP.ViewModels
                             _currentPage++;
                             LoadUpcomingEpisodes();
                         }
+                        else
+                        {
+                            IsLoading = false;
+                        }
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

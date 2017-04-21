@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:apimodels="using:TVShowTimeApi.Model"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     xmlns:localcontrols="using:TVShowTime.UWP.Controls" 
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
@@ -30,5 +31,14 @@
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
         </FlipView>
+
+        <controls:Loading x:Name="LoadingControl"
+                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                          Background="{StaticResource PrimaryYellow}" Opacity="0.4"
+                          IsLoading="{Binding Path=ShowLoading}">
+            <ContentControl x:Name="LoadingContentControl">
+                <TextBlock Text="Currently loading.." FontSize="24" />
+            </ContentControl>
+        </controls:Loading>
     </Grid>
 </Page>
