@@ -16,7 +16,7 @@
         <!-- Background image -->
         <Grid>
             <controls:ImageEx x:Name="BackgroundImage" 
-                              Source="{Binding Path=Show.AllImages.Posters.Zero}"
+                              Source="{x:Bind Path=ViewModel.Show.AllImages.Posters.Zero, Mode=OneWay}"
                               IsCacheEnabled="True"
                               PlaceholderSource="/Images/default-poster.png"
                               VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -31,7 +31,7 @@
             <StackPanel>
                 <!-- Header (show name) -->
                 <TextBlock x:Name="ShowNameText"
-                           Text="{Binding Path=Show.Name}"
+                           Text="{x:Bind Path=ViewModel.Show.Name, Mode=OneWay}"
                            Style="{StaticResource HeaderTextBlockStyle}"
                            FontWeight="Bold" Margin="5" HorizontalAlignment="Center"
                            TextAlignment="Center"
@@ -43,16 +43,16 @@
 
                     <StackPanel x:Name="DescriptionPanel" Padding="40">
                         <TextBlock Foreground="{StaticResource PrimaryBlack}" FontWeight="Bold">
-                            <Run Text="{Binding Path=Show.Status}" />
+                            <Run Text="{x:Bind Path=ViewModel.Show.Status, Mode=OneWay}" />
                             <Run Text="|" />
-                            <Run Text="{Binding Path=Show.NumberOfSeasons}" />
+                            <Run Text="{x:Bind Path=ViewModel.Show.NumberOfSeasons, Mode=OneWay}" />
                             <Run Text="season(s)" />
                             <Run Text="|" />
-                            <Run Text="{Binding Path=Show.NumberOfFollowers}" />
+                            <Run Text="{x:Bind Path=ViewModel.Show.NumberOfFollowers, Mode=OneWay}" />
                             <Run Text="follower(s)" />
                         </TextBlock>
 
-                        <TextBlock x:Name="OverviewText" Text="{Binding Path=Show.Overview}"
+                        <TextBlock x:Name="OverviewText" Text="{x:Bind Path=ViewModel.Show.Overview, Mode=OneWay}"
                                    Margin="0 10 0 0"
                                    TextWrapping="WrapWholeWords"
                                    Foreground="{StaticResource PrimaryBlack}" />

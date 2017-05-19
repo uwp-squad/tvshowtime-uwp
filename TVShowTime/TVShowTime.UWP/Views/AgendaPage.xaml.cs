@@ -15,8 +15,13 @@ namespace TVShowTime.UWP.Views
     {
         #region Fields
 
-        private AgendaViewModel _agendaViewModel;
         private double _scrollDelta = 100;
+
+        #endregion
+
+        #region Properties
+
+        public AgendaViewModel ViewModel { get; }
 
         #endregion
 
@@ -24,9 +29,9 @@ namespace TVShowTime.UWP.Views
 
         public AgendaPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            _agendaViewModel = (AgendaViewModel)DataContext;
+            ViewModel = (AgendaViewModel)DataContext;
 
             Loaded += OnLoaded;
         }
@@ -84,19 +89,19 @@ namespace TVShowTime.UWP.Views
             if (maxVerticalOffset < 0)
             {
                 // Nothing on the screen, load another page
-                _agendaViewModel.LoadNextPage();
+                ViewModel.LoadNextPage();
             }
 
             if (scrollDirection == ScrollDirection.TopToBottom && verticalOffset >= (maxVerticalOffset - _scrollDelta))
             {
                 // Scrolled to bottom
-                _agendaViewModel.LoadNextPage();
+                ViewModel.LoadNextPage();
             }
 
             if (scrollDirection == ScrollDirection.BottomToTop && verticalOffset <= _scrollDelta)
             {
                 // Scrolled to top
-                _agendaViewModel.LoadPreviousPage();
+                ViewModel.LoadPreviousPage();
             }
         }
 

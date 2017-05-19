@@ -91,19 +91,23 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
+                            <TextBlock x:Name="FollowIconText"
+                                       Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
                                        Visibility="{Binding Path=Followed, Converter={StaticResource NullableBoolInvertedToBoolConverter}}"
                                        Text="&#xE710;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
+                            <TextBlock x:Name="FollowText"
+                                       Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
                                        Visibility="{Binding Path=Followed, Converter={StaticResource NullableBoolInvertedToBoolConverter}}"
                                        Text="Add to my shows" />
 
-                            <TextBlock Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
+                            <TextBlock x:Name="UnfollowIconText"
+                                       Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
                                        Visibility="{Binding Path=Followed, Converter={StaticResource NullableBoolToBoolConverter}}"
                                        Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets" />
-                            <TextBlock Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
-                                      Visibility="{Binding Path=Followed, Converter={StaticResource NullableBoolToBoolConverter}}"
-                                      Text="Watching" />
+                            <TextBlock x:Name="UnfollowText"
+                                       Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
+                                       Visibility="{Binding Path=Followed, Converter={StaticResource NullableBoolToBoolConverter}}"
+                                       Text="Watching" />
                         </Grid>
                     </ToggleButton.Content>
                 </ToggleButton>

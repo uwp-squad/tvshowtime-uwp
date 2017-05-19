@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas.Effects;
+using TVShowTime.UWP.ViewModels;
 using Windows.Foundation.Metadata;
 using Windows.UI;
 using Windows.UI.Composition;
@@ -12,11 +13,19 @@ namespace TVShowTime.UWP.Views
 {
     public sealed partial class ShowPage : Page
     {
+        #region Properties
+
+        public ShowViewModel ViewModel { get; }
+
+        #endregion
+
         #region Constructor
 
         public ShowPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            ViewModel = (ShowViewModel)DataContext;
 
             InitializeFrostedGlass(FrostedGlassPanel);
         }

@@ -2,7 +2,6 @@
     x:Class="TVShowTime.UWP.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -90,7 +89,8 @@
                        Width="100" Height="100" />
 
                 <Grid x:Name="MiddleGrid" Margin="0 40">
-                    <StackPanel Visibility="{Binding Path=LoginFailed}">
+                    <StackPanel x:Name="LoginFailedStackpanel"
+                                Visibility="{x:Bind Path=ViewModel.LoginFailed, Mode=OneWay}">
                         <TextBlock x:Name="LoginFailed1Text"
                                    Foreground="{StaticResource PrimaryBlack}"
                                    Text="It seems there was an error during the authentication."
@@ -103,7 +103,8 @@
                                    FontSize="20" Margin="0 10 0 0" />
                     </StackPanel>
 
-                    <StackPanel Visibility="{Binding Path=LoginFailed, Converter={StaticResource BoolToInvertedVisibilityConverter}}">
+                    <StackPanel x:Name="LoginSuccessStackpanel"
+                                Visibility="{x:Bind Path=ViewModel.LoginFailed, Mode=OneWay, Converter={StaticResource BoolToInvertedVisibilityConverter}}">
                         <TextBlock x:Name="LoginSuccess1Text" 
                                    Foreground="{StaticResource PrimaryBlack}"
                                    Text="Welcome to TVShow Time for Windows 10."
@@ -118,8 +119,8 @@
                 </Grid>
 
                 <Button x:Name="AuthenticateButton" 
-                        Command="{Binding Path=TryAuthenticateCommand}"
-                        Visibility="{Binding Path=LoginFailed}"
+                        Command="{x:Bind Path=ViewModel.TryAuthenticateCommand}"
+                        Visibility="{x:Bind Path=ViewModel.LoginFailed, Mode=OneWay}"
                         Style="{StaticResource ActionButtonStyle}"
                         Content="Authenticate" HorizontalAlignment="Center"
                         FontSize="20" Padding="30 5" />

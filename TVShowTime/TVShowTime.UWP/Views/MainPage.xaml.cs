@@ -29,7 +29,7 @@ namespace TVShowTime.UWP.Views
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             // Retrieve colors from app resources
             var primaryBlackColor = (App.Current.Resources["PrimaryBlack"] as SolidColorBrush).Color;

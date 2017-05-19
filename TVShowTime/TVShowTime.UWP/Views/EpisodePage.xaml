@@ -71,7 +71,7 @@
         <!-- Background image -->
         <Grid>
             <controls:ImageEx x:Name="BackgroundImage" 
-                              Source="{Binding Path=Episode.Images.Screen.One}"
+                              Source="{x:Bind Path=ViewModel.Episode.Images.Screen.One, Mode=OneWay}"
                               IsCacheEnabled="True"
                               PlaceholderSource="/Images/default-poster.png"
                               VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -92,26 +92,27 @@
                         <ColumnDefinition x:Name="NextEpisodeColumn" Width="60" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0"
+                    <Button x:Name="PreviousEpisodeButton"
+                            Grid.Column="0"
                             FontSize="24" FontWeight="Bold"
                             FontFamily="Segoe MDL2 Assets" Content="&#xE00E;"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            Visibility="{Binding Path=Episode.PreviousEpisode, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
-                            Command="{Binding Path=GoToPreviousEpisodeCommand}" />
+                            Visibility="{x:Bind Path=ViewModel.Episode.PreviousEpisode, Mode=OneWay, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
+                            Command="{x:Bind Path=ViewModel.GoToPreviousEpisodeCommand}" />
 
                     <StackPanel Grid.Column="1">
                         <HyperlinkButton x:Name="ShowNameText"
-                                         Content="{Binding Path=Episode.Show.Name}"
+                                         Content="{x:Bind Path=ViewModel.Episode.Show.Name, Mode=OneWay}"
                                          FontWeight="Bold" Margin="5"
                                          HorizontalAlignment="Center"
                                          FontSize="48" FontStyle="Normal"
                                          Foreground="{StaticResource PrimaryWhite}"
                                          Style="{StaticResource TitleLinkStyle}"
-                                         Command="{Binding Path=SelectShowCommand}"
-                                         CommandParameter="{Binding Path=Episode}" />
+                                         Command="{x:Bind Path=ViewModel.SelectShowCommand}"
+                                         CommandParameter="{x:Bind Path=ViewModel.Episode, Mode=OneWay}" />
 
                         <TextBlock x:Name="EpisodeNameText" 
-                                   Text="{Binding Path=Episode.Name}"
+                                   Text="{x:Bind Path=ViewModel.Episode.Name, Mode=OneWay}"
                                    Style="{StaticResource SubheaderTextBlockStyle}"
                                    FontWeight="SemiLight" Margin="5" HorizontalAlignment="Center"
                                    TextAlignment="Center"
@@ -122,14 +123,14 @@
                                    TextAlignment="Center"
                                    Foreground="{StaticResource PrimaryWhite}">
                             <Run Text="Season" />
-                            <Run Text="{Binding Path=Episode.Season}" />
+                            <Run Text="{x:Bind Path=ViewModel.Episode.Season, Mode=OneWay}" />
                             <Run Text="Episode" />
-                            <Run Text="{Binding Path=Episode.Number}" />
+                            <Run Text="{x:Bind Path=ViewModel.Episode.Number, Mode=OneWay}" />
                         </TextBlock>
 
                         <ToggleButton Margin="15" FontSize="24" 
-                                      localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolToBoolConverter}}"
-                                      Command="{Binding Path=ToggleWatchCommand}"
+                                      localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolToBoolConverter}}"
+                                      Command="{x:Bind Path=ViewModel.ToggleWatchCommand}"
                                       VerticalAlignment="Center" HorizontalAlignment="Center">
                             <ToggleButton.Content>
                                 <Grid Padding="20 3">
@@ -138,30 +139,35 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
-                                               Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolToBoolConverter}}"
+                                    <TextBlock x:Name="SeenIconText"
+                                               Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
+                                               Visibility="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolToVisibilityConverter}}"
                                                Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets" />
-                                    <TextBlock Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
-                                               Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolToBoolConverter}}"
+                                    <TextBlock x:Name="SeenText"
+                                               Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
+                                               Visibility="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolToVisibilityConverter}}"
                                                Text="Watched!" />
 
-                                    <TextBlock Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
-                                               Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolInvertedToBoolConverter}}"
+                                    <TextBlock x:Name="UnseenIconText"
+                                               Grid.Column="0" Margin="5 4 0 0" FontWeight="Bold" FontSize="18"
+                                               Visibility="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolInvertedToVisibilityConverter}}"
                                                Text="&#xE052;" FontFamily="Segoe MDL2 Assets" />
-                                    <TextBlock Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
-                                               Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolInvertedToBoolConverter}}"
+                                    <TextBlock x:Name="UnseenText"
+                                               Grid.Column="1" Margin="15 0" FontWeight="SemiBold" FontSize="18"
+                                               Visibility="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolInvertedToVisibilityConverter}}"
                                                Text="Watched?" />
                                 </Grid>
                             </ToggleButton.Content>
                         </ToggleButton>
                     </StackPanel>
 
-                    <Button Grid.Column="2"
+                    <Button x:Name="NextEpisodeButton"
+                            Grid.Column="2"
                             FontSize="24" FontWeight="Bold"
                             FontFamily="Segoe MDL2 Assets" Content="&#xE00F;"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                            Visibility="{Binding Path=Episode.NextEpisode, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
-                            Command="{Binding Path=GoToNextEpisodeCommand}" />
+                            Visibility="{x:Bind Path=ViewModel.Episode.NextEpisode, Mode=OneWay, Converter={StaticResource EmptyObjectToVisibilityConverter}}"
+                            Command="{x:Bind Path=ViewModel.GoToNextEpisodeCommand}" />
                 </Grid>
 
                 <!-- Description (air date, overview) -->
@@ -171,12 +177,12 @@
                     <StackPanel x:Name="DescriptionPanel" Padding="40">
                         <TextBlock Foreground="{StaticResource PrimaryBlack}" FontWeight="Bold">
                             <Run Text="Aired on" />
-                            <Run Text="{Binding Path=Episode.Network}" />
+                            <Run Text="{x:Bind Path=ViewModel.Episode.Network, Mode=OneWay}" />
                             <Run Text="the" />
-                            <Run Text="{Binding Path=Episode.AirDate}" />
+                            <Run Text="{x:Bind Path=ViewModel.Episode.AirDate, Mode=OneWay}" />
                         </TextBlock>
 
-                        <TextBlock x:Name="OverviewText" Text="{Binding Episode.Overview}"
+                        <TextBlock x:Name="OverviewText" Text="{x:Bind Path=ViewModel.Episode.Overview, Mode=OneWay}"
                                    Margin="0 10 0 0"
                                    TextWrapping="WrapWholeWords"
                                    Foreground="{StaticResource PrimaryBlack}" />
@@ -184,14 +190,15 @@
                 </Grid>
 
                 <!-- Emotion -->
-                <StackPanel Orientation="Horizontal" 
+                <StackPanel x:Name="EmotionPanel"
+                            Orientation="Horizontal" 
                             Margin="10"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Visibility="{Binding Path=Episode.Seen, Converter={StaticResource NullableBoolToBoolConverter}}">
+                            Visibility="{x:Bind Path=ViewModel.Episode.Seen, Mode=OneWay, Converter={StaticResource NullableBoolToVisibilityConverter}}">
                     <ToggleButton x:Name="GoodEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.GoodEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=GoodEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.GoodEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.GoodEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="GoodEmotionImage" 
                                    Margin="5" Source="/Images/Emoji/ok_hand.png" Width="60" Height="60" />
@@ -204,8 +211,8 @@
 
                     <ToggleButton x:Name="FunEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.FunEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=FunEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.FunEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.FunEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="FunEmotionImage" 
                                    Margin="5" Source="/Images/Emoji/smile.png" Width="60" Height="60" />
@@ -218,8 +225,8 @@
 
                     <ToggleButton x:Name="WowEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.WowEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=WowEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.WowEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.WowEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="WowEmotionImage"
                                    Margin="5" Source="/Images/Emoji/astonished.png" Width="60" Height="60" />
@@ -232,8 +239,8 @@
 
                     <ToggleButton x:Name="SadEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SadEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=SadEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SadEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.SadEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="SadEmotionImage"
                                    Margin="5" Source="/Images/Emoji/cry.png" Width="60" Height="60" />
@@ -246,8 +253,8 @@
 
                     <ToggleButton x:Name="SosoEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SosoEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=SosoEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.SosoEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.SosoEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="SosoEmotionImage"
                                    Margin="5" Source="/Images/Emoji/sleeping.png" Width="60" Height="60" />
@@ -260,8 +267,8 @@
 
                     <ToggleButton x:Name="BadEmotionButton" 
                                   Margin="5" Style="{StaticResource RoundToggleButton}"
-                                  localcontrols:ToggleButtonEx.IsChecked="{Binding Path=Episode.Emotion.Id, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.BadEmotion, Source={StaticResource Locator}}}"
-                                  Command="{Binding Path=ToggleEmotionCommand}" CommandParameter="{Binding Path=BadEmotion}">
+                                  localcontrols:ToggleButtonEx.IsChecked="{x:Bind Path=ViewModel.Episode.Emotion.Id, Mode=OneWay, Converter={StaticResource EmotionValueToBoolConverter}, ConverterParameter={Binding Path=Episode.BadEmotion, Source={StaticResource Locator}}}"
+                                  Command="{x:Bind Path=ViewModel.ToggleEmotionCommand}" CommandParameter="{x:Bind Path=ViewModel.BadEmotion, Mode=OneWay}">
                         <ToggleButton.Content>
                             <Image x:Name="BadEmotionImage"
                                    Margin="5" Source="/Images/Emoji/thumbsdown.png" Width="60" Height="60" />

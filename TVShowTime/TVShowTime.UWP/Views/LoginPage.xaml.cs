@@ -15,11 +15,19 @@ namespace TVShowTime.UWP.Views
 {
     public sealed partial class LoginPage : Page
     {
+        #region Properties
+
+        public LoginViewModel ViewModel { get; }
+
+        #endregion
+
         #region Constructor
 
         public LoginPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            ViewModel = (LoginViewModel)DataContext;
 
             InitializeFrostedGlass(FrostedGlassPanel);
 
