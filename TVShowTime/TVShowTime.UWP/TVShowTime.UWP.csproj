@@ -185,7 +185,6 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="TVShowTime.UWP_StoreKey.pfx" />
-    <None Include="TVShowTime.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\LargeTile.scale-100.png" />
@@ -237,7 +236,6 @@
     <Content Include="Images\Emoji\thumbsdown.png" />
     <Content Include="Images\landing-banner.jpg" />
     <Content Include="Images\logo.png" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
