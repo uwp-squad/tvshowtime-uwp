@@ -2,7 +2,6 @@
     x:Class="TVShowTime.UWP.Views.ToWatchPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:apimodels="using:TVShowTimeApi.Model"
@@ -22,7 +21,8 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <Grid Visibility="{Binding Path=IsNew}"
+                    <Grid x:Name="IsNewGrid"
+                          Visibility="{x:Bind Path=IsNew, Mode=OneWay}"
                           Canvas.ZIndex="1"
                           VerticalAlignment="Top" HorizontalAlignment="Left"
                           Height="50">
@@ -39,16 +39,17 @@
                     </Grid>
 
                     <controls:ImageEx Grid.Row="0"
-                                      Source="{Binding Path=Show.Images.Posters.Zero}"
+                                      Source="{x:Bind Path=Show.Images.Posters.Zero, Mode=OneWay}"
                                       IsCacheEnabled="True"
                                       PlaceholderSource="/Images/default-poster.png"
                                       VerticalAlignment="Center" HorizontalAlignment="Center"
                                       Stretch="UniformToFill" PlaceholderStretch="UniformToFill" />
 
                     <ProgressBar Grid.Row="0" VerticalAlignment="Bottom" 
-                                 Value="{Binding Path=Show.PercentageSeen, Converter={StaticResource DecimalToDoubleConverter}}" 
+                                 Value="{x:Bind Path=Show.PercentageSeen, Mode=OneWay, Converter={StaticResource DecimalToDoubleConverter}}" 
                                  Minimum="0" Maximum="100"
-                                 Foreground="{StaticResource PrimaryGreen}" />
+                                 Foreground="{StaticResource PrimaryGreen}"
+                                 AutomationProperties.AccessibilityView="Raw" />
 
                     <TextBlock Grid.Row="1"
                                Margin="0 4 0 2"
@@ -57,12 +58,12 @@
                                HorizontalAlignment="Stretch"
                                TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
                         <Run Text="Season" />
-                        <Run Text="{Binding Path=Season}" />
+                        <Run Text="{x:Bind Path=Season, Mode=OneWay}" />
                         <Run Text="Episode" />
-                        <Run Text="{Binding Path=Number}" />
+                        <Run Text="{x:Bind Path=Number, Mode=OneWay}" />
                     </TextBlock>
 
-                    <TextBlock Grid.Row="2" Text="{Binding Path=Show.Name}"
+                    <TextBlock Grid.Row="2" Text="{x:Bind Path=Show.Name, Mode=OneWay}"
                                Foreground="{StaticResource PrimaryBlack}"
                                FontSize="12"
                                HorizontalAlignment="Stretch"
@@ -81,22 +82,23 @@
         <TextBlock Grid.Row="0" x:Name="ToWatchTitle"
                    Padding="10"
                    Style="{StaticResource TitleTextBlockStyle}">
-            <Run Text="To Watch (" /><Run Text="{Binding Path=Episodes.Count}" /><Run Text=")" />
+            <Run Text="To Watch (" /><Run Text="{x:Bind Path=ViewModel.Episodes.Count, Mode=OneWay}" /><Run Text=")" />
         </TextBlock>
 
         <controls:AdaptiveGridView Grid.Row="1" x:Name="AdaptiveGridViewControl"
-                                   ItemsSource="{Binding Path=Episodes}"
+                                   ItemsSource="{x:Bind Path=ViewModel.Episodes, Mode=OneWay}"
                                    SelectionMode="None"
                                    DesiredWidth="200"
                                    ItemTemplate="{StaticResource EpisodeTemplate}"
                                    IsItemClickEnabled="True"
-                                   ItemClickCommand="{Binding Path=SelectEpisodeCommand}"
-                                   animations:ReorderGridAnimation.Duration="250" />
+                                   ItemClickCommand="{x:Bind Path=ViewModel.SelectEpisodeCommand}"
+                                   animations:ReorderGridAnimation.Duration="250"
+                                   AutomationProperties.AccessibilityView="Raw" />
 
         <controls:Loading x:Name="LoadingControl" Grid.RowSpan="2"
                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                           Background="{StaticResource PrimaryYellow}" Opacity="0.4"
-                          IsLoading="{Binding Path=IsLoading}">
+                          IsLoading="{x:Bind Path=ViewModel.IsLoading, Mode=OneWay}">
             <ContentControl x:Name="LoadingContentControl">
                 <TextBlock Text="Currently loading.." FontSize="24" />
             </ContentControl>

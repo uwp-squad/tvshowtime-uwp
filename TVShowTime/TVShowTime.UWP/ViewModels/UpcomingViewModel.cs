@@ -172,26 +172,26 @@ namespace TVShowTime.UWP.ViewModels
         }
 
         #endregion
+    }
 
-        #region Private ViewModels
+    #region Private ViewModels
 
-        public class UpcomingEpisodeViewModel : ViewModelBase
+    public class UpcomingEpisodeViewModel : ViewModelBase
+    {
+        public long Id { get; set; }
+        public int Season { get; set; }
+        public int Number { get; set; }
+        public Show Show { get; set; }
+
+        private string _diffTime;
+        public string DiffTime
         {
-            public long Id { get; set; }
-            public int Season { get; set; }
-            public int Number { get; set; }
-            public Show Show { get; set; }
-
-            private string _diffTime;
-            public string DiffTime
-            {
-                get { return _diffTime; }
-                set { _diffTime = value; RaisePropertyChanged(); }
-            }
-
-            public Episode Original { get; set; }
+            get { return _diffTime; }
+            set { _diffTime = value; RaisePropertyChanged(); }
         }
 
-        #endregion
+        public Episode Original { get; set; }
     }
+
+    #endregion
 }

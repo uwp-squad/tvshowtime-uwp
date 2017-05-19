@@ -35,6 +35,8 @@
             <converters:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter" />
             <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter" />
             <converters:NullableBoolInvertedToBoolConverter x:Key="NullableBoolInvertedToBoolConverter" />
+            <converters:NullableBoolToVisibilityConverter x:Key="NullableBoolToVisibilityConverter" />
+            <converters:NullableBoolInvertedToVisibilityConverter x:Key="NullableBoolInvertedToVisibilityConverter" />
             <converters:EmotionValueToBoolConverter x:Key="EmotionValueToBoolConverter" />
             <converters:DateToTodayColorConverter x:Key="DateToTodayColorConverter" />
             <converters:DateToMonthStringConverter x:Key="DateToMonthStringConverter" />

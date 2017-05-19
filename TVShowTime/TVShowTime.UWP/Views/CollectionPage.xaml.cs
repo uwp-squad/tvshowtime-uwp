@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using TVShowTime.UWP.ViewModels;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace TVShowTime.UWP.Views
 {
     public sealed partial class CollectionPage : Page
     {
+        #region Properties
+
+        public CollectionViewModel ViewModel { get; }
+
+        #endregion
+
         #region Constructor
 
         public CollectionPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            ViewModel = (CollectionViewModel)DataContext;
         }
 
         #endregion

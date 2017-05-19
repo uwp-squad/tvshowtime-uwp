@@ -23,24 +23,25 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Background="{Binding Path=State, Converter={StaticResource FeedbackCardStateToColorConverter}}">
-                        <TextBlock Foreground="White" Text="{Binding Path=State, Converter={StaticResource FeedbackCardStateToStringConverter}}"
+                    <Grid Grid.Row="0" Background="{x:Bind Path=State, Mode=OneWay, Converter={StaticResource FeedbackCardStateToColorConverter}}">
+                        <TextBlock Foreground="White" Text="{x:Bind Path=State, Mode=OneWay, Converter={StaticResource FeedbackCardStateToStringConverter}}"
                                    FontWeight="Bold" FontSize="12"
                                    HorizontalAlignment="Center" Padding="4" />
                     </Grid>
 
-                    <TextBlock Grid.Row="1" Text="{Binding Path=Title}" Margin="0 10 0 0"
+                    <TextBlock Grid.Row="1" Text="{x:Bind Path=Title, Mode=OneWay}" Margin="0 10 0 0"
                                Foreground="{StaticResource PrimaryGray}"
                                FontSize="24" TextWrapping="WrapWholeWords" />
 
-                    <TextBlock Grid.Row="2" Text="{Binding Path=Description}" Margin="0 10 0 0"
+                    <TextBlock Grid.Row="2" Text="{x:Bind Path=Description, Mode=OneWay}" Margin="0 10 0 0"
                                Foreground="{StaticResource PrimaryGray}"
                                TextWrapping="WrapWholeWords" />
 
-                    <TextBlock Grid.Row="3" Text="Click on this card to open vote page"
+                    <TextBlock x:Name="AddNewFeedbackText"
+                               Grid.Row="3" Text="Click on this card to open vote page"
                                FontSize="12" Foreground="{StaticResource PrimaryBlack}" FontStyle="Italic"
                                VerticalAlignment="Bottom"
-                               Visibility="{Binding Path=Link, Converter={StaticResource EmptyObjectToVisibilityConverter}}" />
+                               Visibility="{x:Bind Path=Link, Mode=OneWay, Converter={StaticResource EmptyObjectToVisibilityConverter}}" />
                 </Grid>
             </controls:DropShadowPanel>
         </DataTemplate>
@@ -59,18 +60,18 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
-                                           ItemsSource="{Binding Path=Cards}"
+                                           ItemsSource="{x:Bind Path=ViewModel.Cards, Mode=OneWay}"
                                            SelectionMode="None"
                                            DesiredWidth="300"
                                            ItemTemplate="{StaticResource FeedbackCardTemplate}"
                                            IsItemClickEnabled="True"
-                                           ItemClickCommand="{Binding Path=OpenFeedbackCardCommand}"
+                                           ItemClickCommand="{x:Bind Path=ViewModel.OpenFeedbackCardCommand}"
                                            animations:ReorderGridAnimation.Duration="250" />
 
                 <Button x:Name="LaunchFeedbackHubButton" 
                         Margin="5"
                         Content="Add a new feedback"
-                        Command="{Binding Path=LaunchFeedbackHubCommand}" />
+                        Command="{x:Bind Path=ViewModel.LaunchFeedbackHubCommand}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

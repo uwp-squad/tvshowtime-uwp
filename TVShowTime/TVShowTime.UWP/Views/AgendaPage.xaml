@@ -2,12 +2,12 @@
     x:Class="TVShowTime.UWP.Views.AgendaPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
     xmlns:apimodels="using:TVShowTimeApi.Model"
+    xmlns:models="using:TVShowTime.UWP.Models"
     mc:Ignorable="d"
     DataContext="{Binding Agenda, Source={StaticResource Locator}}"
     NavigationCacheMode="Required">
@@ -26,7 +26,7 @@
                     </Grid.RowDefinitions>
 
                     <controls:ImageEx Grid.Row="0"
-                                      Source="{Binding Path=Show.Images.Posters.Zero}"
+                                      Source="{x:Bind Path=Show.Images.Posters.Zero}"
                                       IsCacheEnabled="True"
                                       PlaceholderSource="/Images/default-poster.png"
                                       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -39,12 +39,12 @@
                                HorizontalAlignment="Stretch"
                                TextWrapping="NoWrap" TextTrimming="CharacterEllipsis">
                         <Run Text="Season" />
-                        <Run Text="{Binding Path=Season}" />
+                        <Run Text="{x:Bind Path=Season}" />
                         <Run Text="Episode" />
-                        <Run Text="{Binding Path=Number}" />
+                        <Run Text="{x:Bind Path=Number}" />
                     </TextBlock>
 
-                    <TextBlock Grid.Row="2" Text="{Binding Path=Show.Name}"
+                    <TextBlock Grid.Row="2" Text="{x:Bind Path=Show.Name}"
                                Foreground="{StaticResource PrimaryBlack}"
                                FontSize="12"
                                HorizontalAlignment="Stretch"
@@ -53,18 +53,18 @@
             </controls:DropShadowPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="HeaderDateTemplate">
+        <DataTemplate x:Key="HeaderDateTemplate" x:DataType="models:AgendaGroup">
             <StackPanel>
-                <TextBlock Text="{Binding Path=Date.Day}" 
-                           Foreground="{Binding Path=Date, Converter={StaticResource DateToTodayColorConverter}}"
+                <TextBlock Text="{x:Bind Path=Date.Day}" 
+                           Foreground="{x:Bind Path=Date, Converter={StaticResource DateToTodayColorConverter}}"
                            FontWeight="Bold" FontSize="80" />
 
-                <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToMonthStringConverter}}" 
-                           Foreground="{Binding Path=Date, Converter={StaticResource DateToTodayColorConverter}}"
+                <TextBlock Text="{x:Bind Path=Date, Converter={StaticResource DateToMonthStringConverter}}" 
+                           Foreground="{x:Bind Path=Date, Converter={StaticResource DateToTodayColorConverter}}"
                            FontWeight="SemiBold" FontSize="26"
                            Margin="0 -15 0 0" />
 
-                <TextBlock Text="{Binding Path=Date, Converter={StaticResource DateToTimelineStringConverter}}"
+                <TextBlock Text="{x:Bind Path=Date, Converter={StaticResource DateToTimelineStringConverter}}"
                            Foreground="{StaticResource PrimaryBlack}"
                            FontSize="16" Margin="0 10 0 0" />
             </StackPanel>
@@ -96,7 +96,7 @@
                 <controls:AdaptiveGridView x:Name="EpisodesGridView" 
                                            ItemsSource="{Binding Source={StaticResource AgendaCollection}}"
                                            ItemTemplate="{StaticResource EpisodeTemplate}"
-                                           ItemClickCommand="{Binding Path=SelectEpisodeCommand}"
+                                           ItemClickCommand="{x:Bind Path=ViewModel.SelectEpisodeCommand}"
                                            SelectionMode="None"
                                            DesiredWidth="200"
                                            IsItemClickEnabled="True"
@@ -111,7 +111,7 @@
         <controls:Loading x:Name="LoadingControl" 
                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                           Background="{StaticResource PrimaryYellow}" Opacity="0.4"
-                          IsLoading="{Binding Path=IsLoading}">
+                          IsLoading="{x:Bind Path=ViewModel.IsLoading, Mode=OneWay}">
             <ContentControl x:Name="LoadingContentControl">
                 <TextBlock Text="Currently loading.." FontSize="24" />
             </ContentControl>

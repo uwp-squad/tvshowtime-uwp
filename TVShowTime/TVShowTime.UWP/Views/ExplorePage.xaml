@@ -2,7 +2,6 @@
     x:Class="TVShowTime.UWP.Views.ExplorePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TVShowTime.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:apimodels="using:TVShowTimeApi.Model"
@@ -22,11 +21,11 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <FlipView x:Name="FlipView"
-                  ItemsSource="{Binding Path=Shows}"
+                  ItemsSource="{x:Bind Path=ViewModel.Shows, Mode=OneWay}"
                   ItemTemplate="{StaticResource ShowTemplate}">
             <interactivity:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="SelectionChanged">
-                    <core:InvokeCommandAction Command="{Binding Path=SelectionChangedCommand}"
+                    <core:InvokeCommandAction Command="{x:Bind Path=ViewModel.SelectionChangedCommand}"
                                               CommandParameter="{Binding ElementName=FlipView, Path=SelectedIndex}" />
                 </core:EventTriggerBehavior>
             </interactivity:Interaction.Behaviors>
@@ -35,7 +34,7 @@
         <controls:Loading x:Name="LoadingControl"
                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                           Background="{StaticResource PrimaryYellow}" Opacity="0.4"
-                          IsLoading="{Binding Path=ShowLoading}">
+                          IsLoading="{x:Bind Path=ViewModel.ShowLoading, Mode=OneWay}">
             <ContentControl x:Name="LoadingContentControl">
                 <TextBlock Text="Currently loading.." FontSize="24" />
             </ContentControl>
