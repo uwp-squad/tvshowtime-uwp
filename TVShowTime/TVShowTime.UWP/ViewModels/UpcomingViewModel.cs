@@ -5,23 +5,29 @@ using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class UpcomingViewModel : ViewModelBase
+    public class UpcomingViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IHamburgerMenuService _hamburgerMenuService;
+        private IEventService _eventService;
 
         private const int _pageSize = 15;
         private int _currentPage = 0;
+
+        private bool _watchedOrUnwatchedEpisode = false;
+        private bool _followedOrUnfollowedShow = false;
 
         #endregion
 
@@ -36,6 +42,24 @@ namespace TVShowTime.UWP.ViewModels
             set { _isLoading = value; RaisePropertyChanged(); }
         }
 
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                return _watchedOrUnwatchedEpisode || _followedOrUnfollowedShow || DateTime.Now.Subtract(LastLoadingDate).TotalMinutes > 15;
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -48,14 +72,30 @@ namespace TVShowTime.UWP.ViewModels
 
         public UpcomingViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
-            IHamburgerMenuService hamburgerMenuService)
+            IHamburgerMenuService hamburgerMenuService,
+            IEventService eventService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _hamburgerMenuService = hamburgerMenuService;
+            _eventService = eventService;
 
             SelectEpisodeCommand = new RelayCommand<UpcomingEpisodeViewModel>(SelectEpisode);
 
-            Initialize();
+            Refresh();
+
+            _eventService.WatchEpisodeEvent
+                .Concat(_eventService.UnwatchEpisodeEvent)
+                .Subscribe((episode) =>
+                {
+                    _watchedOrUnwatchedEpisode = true;
+                });
+
+            _eventService.FollowShowEvent
+                .Concat(_eventService.UnfollowShowEvent)
+                .Subscribe((show) =>
+                {
+                    _followedOrUnfollowedShow = true;
+                });
         }
 
         #endregion
@@ -70,13 +110,23 @@ namespace TVShowTime.UWP.ViewModels
 
         #endregion
 
-        #region Private Methods
+        #region Public Methods
 
-        private void Initialize()
+        public void Refresh()
         {
             _currentPage = 0;
+            LastLoadingDate = DateTime.Now;
+            _watchedOrUnwatchedEpisode = false;
+            _followedOrUnfollowedShow = false;
+
+            Episodes.Clear();
+
             LoadUpcomingEpisodes();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void LoadUpcomingEpisodes()
         {

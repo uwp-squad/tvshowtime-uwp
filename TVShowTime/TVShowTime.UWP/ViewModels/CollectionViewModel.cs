@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Models;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
@@ -14,7 +15,7 @@ using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class CollectionViewModel : ViewModelBase
+    public class CollectionViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
@@ -42,7 +43,26 @@ namespace TVShowTime.UWP.ViewModels
         public bool IsLoading
         {
             get { return _isLoading; }
-            set { _isLoading = value; RaisePropertyChanged(); }
+            private set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                // TODO : Listen if a show has been followed/unfollowed from the collection
+                return DateTime.Now.Subtract(LastLoadingDate).TotalHours > 6;
+            }
         }
 
         #endregion
@@ -80,7 +100,7 @@ namespace TVShowTime.UWP.ViewModels
             Groups.Add(_endedGroup);
             Groups.Add(_archivedGroup);
 
-            Initialize();
+            Refresh();
         }
 
         #endregion
@@ -95,13 +115,26 @@ namespace TVShowTime.UWP.ViewModels
 
         #endregion
 
-        #region Private Methods
+        #region Public Methods
 
-        private void Initialize()
+        public void Refresh()
         {
+            _allGroup.Shows.Clear();
+            _lateGroup.Shows.Clear();
+            _upToDateGroup.Shows.Clear();
+            _continuingGroup.Shows.Clear();
+            _endedGroup.Shows.Clear();
+            _archivedGroup.Shows.Clear();
+
             _currentPage = 0;
+            LastLoadingDate = DateTime.Now;
+
             LoadCollection();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void LoadCollection()
         {

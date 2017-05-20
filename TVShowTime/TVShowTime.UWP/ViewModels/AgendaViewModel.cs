@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Models;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
@@ -14,7 +15,7 @@ using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class AgendaViewModel : ViewModelBase
+    public class AgendaViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
@@ -35,7 +36,28 @@ namespace TVShowTime.UWP.ViewModels
         public bool IsLoading
         {
             get { return _isLoading; }
-            set { _isLoading = value; RaisePropertyChanged(); }
+            private set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                // TODO : Listen if a show has been followed/unfollowed from the collection
+                return DateTime.Now.Day != LastLoadingDate.Day ||
+                    DateTime.Now.Month != LastLoadingDate.Month ||
+                    DateTime.Now.Year != LastLoadingDate.Year;
+            }
         }
 
         #endregion
@@ -59,7 +81,7 @@ namespace TVShowTime.UWP.ViewModels
 
             SelectEpisodeCommand = new RelayCommand<Episode>(SelectEpisode);
 
-            LoadAgendaPage(_currentPage);
+            Refresh();
         }
 
         #endregion
@@ -92,6 +114,17 @@ namespace TVShowTime.UWP.ViewModels
                 _currentPage++;
                 LoadAgendaPage(_currentPage);
             }
+        }
+
+        public void Refresh()
+        {
+            Groups.Clear();
+
+            LastLoadingDate = DateTime.Now;
+            _currentReversePage = 0;
+            _currentPage = 0;
+
+            LoadAgendaPage(_currentPage);
         }
 
         #endregion

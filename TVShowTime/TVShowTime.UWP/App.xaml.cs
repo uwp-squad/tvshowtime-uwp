@@ -30,8 +30,8 @@ namespace TVShowTime.UWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         #endregion
@@ -52,7 +52,6 @@ namespace TVShowTime.UWP
             {
                 // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
                 rootFrame = new Frame();
-
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -72,6 +71,7 @@ namespace TVShowTime.UWP
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que paramètre
                     rootFrame.Navigate(typeof(LoginPage), e.Arguments);
                 }
+
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
             }
@@ -83,6 +83,8 @@ namespace TVShowTime.UWP
         /// <param name="args"></param>
         protected override void OnActivated(IActivatedEventArgs args)
         {
+            bool resuming = true;
+
             // Get the root frame
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -107,6 +109,8 @@ namespace TVShowTime.UWP
 
                 // Placez le frame dans la fenêtre active
                 Window.Current.Content = rootFrame;
+
+                resuming = false;
             }
 
             if (rootFrame.Content == null)
@@ -114,10 +118,17 @@ namespace TVShowTime.UWP
                 // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                 // puis configurez la nouvelle page en transmettant les informations requises en tant que paramètre
                 rootFrame.Navigate(typeof(LoginPage));
+
+                resuming = false;
             }
 
             // Ensure the current window is active
             Window.Current.Activate();
+
+            if (resuming)
+            {
+                // TODO : Handle refresh of current page
+            }
         }
 
         /// <summary>

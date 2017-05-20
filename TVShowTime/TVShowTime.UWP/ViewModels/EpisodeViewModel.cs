@@ -5,6 +5,7 @@ using Microsoft.Toolkit.Uwp;
 using System;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Model.Requests;
@@ -12,7 +13,7 @@ using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class EpisodeViewModel : ViewModelBase
+    public class EpisodeViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
@@ -25,12 +26,39 @@ namespace TVShowTime.UWP.ViewModels
         #region Properties
 
         public Episode Episode { get; set; }
+
         public Emotion GoodEmotion { get; } = Emotion.Good;
         public Emotion FunEmotion { get; } = Emotion.Fun;
         public Emotion WowEmotion { get; } = Emotion.Wow;
         public Emotion SadEmotion { get; } = Emotion.Sad;
         public Emotion SosoEmotion { get; } = Emotion.Soso;
         public Emotion BadEmotion { get; } = Emotion.Bad;
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading && Episode != null && Episode.Id > 0;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                // TODO : Listen if an episode is watched/unwatched outside this ViewModel
+                return DateTime.Now.Subtract(LastLoadingDate).TotalHours > 1;
+            }
+        }
 
         #endregion
 
@@ -169,25 +197,38 @@ namespace TVShowTime.UWP.ViewModels
             RefreshByEpisodeId(episodeId);
         }
 
+        public void Refresh()
+        {
+            RefreshByEpisodeId(Episode.Id);
+        }
+
         #endregion
 
         #region Private Methods
 
         private void RefreshByEpisodeId(long episodeId)
         {
-            var request = new EpisodeRequestByEpisodeId { EpisodeId = episodeId };
+            IsLoading = true;
 
-            _tvshowtimeApiService.GetEpisode(request)
+            _tvshowtimeApiService.GetEpisode(new EpisodeRequestByEpisodeId { EpisodeId = episodeId })
                 .Subscribe(async (episodeResponse) =>
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                     {
+                        LastLoadingDate = DateTime.Now;
+
                         Episode = episodeResponse.Episode;
                         RaisePropertyChanged(nameof(Episode));
+
+                        IsLoading = false;
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }

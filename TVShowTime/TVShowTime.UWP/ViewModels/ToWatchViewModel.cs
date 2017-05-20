@@ -4,22 +4,26 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using TVShowTime.UWP.Constants;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class ToWatchViewModel : ViewModelBase
+    public class ToWatchViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IHamburgerMenuService _hamburgerMenuService;
         private IEventService _eventService;
+
+        private bool _watchedOrUnwatchedEpisode = false;
+        private bool _followedOrUnfollowedShow = false;
 
         #endregion
 
@@ -32,6 +36,24 @@ namespace TVShowTime.UWP.ViewModels
         {
             get { return _isLoading; }
             set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                return _watchedOrUnwatchedEpisode || _followedOrUnfollowedShow || DateTime.Now.Subtract(LastLoadingDate).TotalHours > 1;
+            }
         }
 
         #endregion
@@ -58,31 +80,17 @@ namespace TVShowTime.UWP.ViewModels
             Refresh();
 
             _eventService.WatchEpisodeEvent
+                .Concat(_eventService.UnwatchEpisodeEvent)
                 .Subscribe((episode) =>
                 {
-                    Refresh();
+                    _watchedOrUnwatchedEpisode = true;
                 });
-
-            _eventService.UnwatchEpisodeEvent
-               .Subscribe((episode) =>
-               {
-                   Refresh();
-               });
 
             _eventService.FollowShowEvent
+                .Concat(_eventService.UnfollowShowEvent)
                 .Subscribe((show) =>
                 {
-                    Refresh();
-                });
-
-            _eventService.UnfollowShowEvent
-                .Subscribe((show) =>
-                {
-                    var episodeOfTheShow = Episodes.FirstOrDefault(e => e.Show.Id == show.Id);
-                    if (episodeOfTheShow != null)
-                    {
-                        Episodes.Remove(episodeOfTheShow);
-                    }
+                    _followedOrUnfollowedShow = true;
                 });
         }
 
@@ -98,9 +106,9 @@ namespace TVShowTime.UWP.ViewModels
 
         #endregion
 
-        #region Private Methods
+        #region Public Methods
 
-        private void Refresh()
+        public void Refresh()
         {
             IsLoading = true;
 
@@ -109,6 +117,10 @@ namespace TVShowTime.UWP.ViewModels
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                     {
+                        _watchedOrUnwatchedEpisode = false;
+                        _followedOrUnfollowedShow = false;
+                        LastLoadingDate = DateTime.Now;
+
                         Episodes.Clear();
 
                         foreach (var episode in watchlistResponse.Episodes)

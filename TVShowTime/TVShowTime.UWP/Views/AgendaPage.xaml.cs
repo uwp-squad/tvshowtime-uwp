@@ -46,6 +46,12 @@ namespace TVShowTime.UWP.Views
 
             // Each time a navigation event occurs, update the Back button's visibility
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+
+            // Handle refresh
+            if (ViewModel.CanRefresh && ViewModel.ShouldRefresh)
+            {
+                ViewModel.Refresh();
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

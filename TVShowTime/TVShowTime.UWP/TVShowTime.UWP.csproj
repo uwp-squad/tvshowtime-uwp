@@ -121,6 +121,8 @@
     <Compile Include="Converters\NullableBoolInvertedToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullableBoolToBoolConverter.cs" />
+    <Compile Include="Infrastructure\ILoadable.cs" />
+    <Compile Include="Infrastructure\IRefreshable.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
     <Compile Include="Models\ActionMenuItem.cs" />
     <Compile Include="Models\AgendaGroup.cs" />

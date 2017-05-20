@@ -1,13 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using Microsoft.Toolkit.Uwp;
 using System;
+using TVShowTime.UWP.Infrastructure;
 using TVShowTime.UWP.Services;
 using TVShowTimeApi.Model;
 using TVShowTimeApi.Services;
 
 namespace TVShowTime.UWP.ViewModels
 {
-    public class ShowViewModel : ViewModelBase
+    public class ShowViewModel : ViewModelBase, IRefreshable, ILoadable
     {
         #region Fields
 
@@ -19,6 +20,32 @@ namespace TVShowTime.UWP.ViewModels
         #region Properties
 
         public Show Show { get; set; }
+
+        private bool _isLoading = false;
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            private set { _isLoading = value; RaisePropertyChanged(); }
+        }
+
+        public DateTime LastLoadingDate { get; private set; }
+
+        public bool CanRefresh
+        {
+            get
+            {
+                return !IsLoading && Show != null && Show.Id > 0;
+            }
+        }
+
+        public bool ShouldRefresh
+        {
+            get
+            {
+                // TODO : Listen if an episode is watched/unwatched outside this ViewModel
+                return DateTime.Now.Subtract(LastLoadingDate).TotalHours > 3;
+            }
+        }
 
         #endregion
 
@@ -41,23 +68,38 @@ namespace TVShowTime.UWP.ViewModels
             RefreshByShowId(showId);
         }
 
+        public void Refresh()
+        {
+            RefreshByShowId(Show.Id);
+        }
+
         #endregion
 
         #region Private Methods
 
         private void RefreshByShowId(long showId)
         {
+            IsLoading = true;
+
             _tvshowtimeApiService.GetShow(showId, string.Empty, false)
                 .Subscribe(async (showResponse) =>
                 {
                     await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                     {
+                        LastLoadingDate = DateTime.Now;
+
                         Show = showResponse.Show;
                         RaisePropertyChanged(nameof(Show));
+
+                        IsLoading = false;
                     });
                 },
-                (error) =>
+                async (error) =>
                 {
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        IsLoading = false;
+                    });
                     throw new Exception();
                 });
         }
