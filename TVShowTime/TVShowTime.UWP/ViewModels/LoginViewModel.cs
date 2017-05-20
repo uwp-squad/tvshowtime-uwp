@@ -171,25 +171,26 @@ namespace TVShowTime.UWP.ViewModels
 
         private void HandleLoginSuccess()
         {
-            _tvshowtimeApiService.GetCurrentUser().Subscribe(async (userResponse) =>
-            {
-                // Cache access token in Password vault
-                SaveUserToken(userResponse.User.Username);
-
-                // Save user information (connection profile) in local storage
-                var userConnectionProfile = new UserConnnectionProfile
+            _tvshowtimeApiService.GetCurrentUser()
+                .Subscribe(async (userResponse) =>
                 {
-                    User = userResponse.User,
-                    ExpirationDate = DateTime.Now.AddSeconds(LoginConstants.TokenLifetime)
-                };
-                await AddUserConnectionProfileAsync(userConnectionProfile);
+                    // Cache access token in Password vault
+                    SaveUserToken(userResponse.User.Username);
 
-                // Navigate to main page
-                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-                {
-                    _navigationService.NavigateTo(ViewConstants.Main);
+                    // Save user information (connection profile) in local storage
+                    var userConnectionProfile = new UserConnnectionProfile
+                    {
+                        User = userResponse.User,
+                        ExpirationDate = DateTime.Now.AddSeconds(LoginConstants.TokenLifetime)
+                    };
+                    await AddUserConnectionProfileAsync(userConnectionProfile);
+
+                    // Navigate to main page
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                    {
+                        _navigationService.NavigateTo(ViewConstants.Main);
+                    });
                 });
-            });
         }
 
         #endregion

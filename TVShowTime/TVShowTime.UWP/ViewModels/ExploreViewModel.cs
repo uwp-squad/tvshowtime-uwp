@@ -20,6 +20,7 @@ namespace TVShowTime.UWP.ViewModels
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IEventService _eventService;
         private IHamburgerMenuService _hamburgerMenuService;
+        private IToastNotificationService _toastNotificationService;
 
         private const int _pageSize = 5;
         private int _currentPage = 0;
@@ -60,11 +61,13 @@ namespace TVShowTime.UWP.ViewModels
         public ExploreViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
             IEventService eventService,
-            IHamburgerMenuService hamburgerMenuService)
+            IHamburgerMenuService hamburgerMenuService,
+            IToastNotificationService toastNotificationService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _eventService = eventService;
             _hamburgerMenuService = hamburgerMenuService;
+            _toastNotificationService = toastNotificationService;
 
             SelectionChangedCommand = new RelayCommand<int>(SelectionChanged);
             ToggleFollowShowCommand = new RelayCommand<ExploreShowViewModel>(ToggleFollowShow);
@@ -175,7 +178,8 @@ namespace TVShowTime.UWP.ViewModels
                     {
                         IsLoading = false;
                     });
-                    throw new Exception();
+
+                    _toastNotificationService.ShowErrorNotification("An error happened. Please retry later.");
                 });
         }
 

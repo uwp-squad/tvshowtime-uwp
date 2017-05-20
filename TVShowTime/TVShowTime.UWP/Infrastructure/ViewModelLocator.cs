@@ -52,6 +52,12 @@ namespace TVShowTime.UWP.Infrastructure
                 SimpleIoc.Default.Register<IEventService>(() => eventService);
             }
 
+            if (!SimpleIoc.Default.IsRegistered<IToastNotificationService>())
+            {
+                var toastNotificationService = new ToastNotificationService();
+                SimpleIoc.Default.Register<IToastNotificationService>(() => toastNotificationService);
+            }
+
             // Register ViewModels
             SimpleIoc.Default.Register<AgendaViewModel>();
             SimpleIoc.Default.Register<CollectionViewModel>();

@@ -14,6 +14,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IEventService _eventService;
+        private IToastNotificationService _toastNotificationService;
 
         #endregion
 
@@ -53,10 +54,12 @@ namespace TVShowTime.UWP.ViewModels
 
         public ShowViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
-            IEventService eventService)
+            IEventService eventService,
+            IToastNotificationService toastNotificationService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _eventService = eventService;
+            _toastNotificationService = toastNotificationService;
         }
 
         #endregion
@@ -100,7 +103,8 @@ namespace TVShowTime.UWP.ViewModels
                     {
                         IsLoading = false;
                     });
-                    throw new Exception();
+
+                    _toastNotificationService.ShowErrorNotification("An error happened. Please retry later.");
                 });
         }
 

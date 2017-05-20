@@ -21,6 +21,7 @@ namespace TVShowTime.UWP.ViewModels
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IHamburgerMenuService _hamburgerMenuService;
         private IEventService _eventService;
+        private IToastNotificationService _toastNotificationService;
 
         private bool _watchedOrUnwatchedEpisode = false;
         private bool _followedOrUnfollowedShow = false;
@@ -69,11 +70,13 @@ namespace TVShowTime.UWP.ViewModels
         public ToWatchViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
             IHamburgerMenuService hamburgerMenuService,
-            IEventService eventService)
+            IEventService eventService,
+            IToastNotificationService toastNotificationService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _hamburgerMenuService = hamburgerMenuService;
             _eventService = eventService;
+            _toastNotificationService = toastNotificationService;
 
             SelectEpisodeCommand = new RelayCommand<Episode>(SelectEpisode);
 
@@ -137,7 +140,8 @@ namespace TVShowTime.UWP.ViewModels
                     {
                         IsLoading = false;
                     });
-                    throw new Exception();
+
+                    _toastNotificationService.ShowErrorNotification("An error happened. Please retry later.");
                 });
         }
 

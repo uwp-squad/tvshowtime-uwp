@@ -136,6 +136,7 @@
     <Compile Include="Models\UserConnnectionProfile.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\HamburgerMenuService.cs" />
+    <Compile Include="Services\ToastNotificationService.cs" />
     <Compile Include="Templates\MenuItemTemplateSelector.cs" />
     <Compile Include="ViewModels\AgendaViewModel.cs" />
     <Compile Include="ViewModels\CollectionViewModel.cs" />

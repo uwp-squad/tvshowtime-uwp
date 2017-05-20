@@ -20,6 +20,7 @@ namespace TVShowTime.UWP.ViewModels
         private IReactiveTVShowTimeApiService _tvshowtimeApiService;
         private IEventService _eventService;
         private IHamburgerMenuService _hamburgerMenuService;
+        private IToastNotificationService _toastNotificationService;
 
         #endregion
 
@@ -77,11 +78,13 @@ namespace TVShowTime.UWP.ViewModels
         public EpisodeViewModel(
             IReactiveTVShowTimeApiService tvshowtimeApiService,
             IEventService eventService,
-            IHamburgerMenuService hamburgerMenuService)
+            IHamburgerMenuService hamburgerMenuService,
+            IToastNotificationService toastNotificationService)
         {
             _tvshowtimeApiService = tvshowtimeApiService;
             _eventService = eventService;
             _hamburgerMenuService = hamburgerMenuService;
+            _toastNotificationService = toastNotificationService;
 
             ToggleWatchCommand = new RelayCommand(ToggleWatch);
             GoToPreviousEpisodeCommand = new RelayCommand(GoToPreviousEpisode);
@@ -229,7 +232,8 @@ namespace TVShowTime.UWP.ViewModels
                     {
                         IsLoading = false;
                     });
-                    throw new Exception();
+
+                    _toastNotificationService.ShowErrorNotification("An error happened. Please retry later.");
                 });
         }
 
