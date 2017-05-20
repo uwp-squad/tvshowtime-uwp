@@ -54,8 +54,10 @@
                                 DisplayMode="CompactOverlay"
                                 PaneBackground="{StaticResource PrimaryBlack}"
                                 Foreground="{StaticResource PrimaryGray}"
+                                ItemsSource="{x:Bind ViewModel.MenuItems, Mode=OneWay}"
                                 ItemClick="OnMenuItemClick"
                                 ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
+                                OptionsItemsSource="{x:Bind ViewModel.OptionMenuItems, Mode=OneWay}"
                                 OptionsItemClick="OnMenuItemClick"
                                 OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}">
             <Frame x:Name="ContentFrame">

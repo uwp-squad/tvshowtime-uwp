@@ -6,6 +6,10 @@ using TVShowTime.UWP.BackgroundTasks;
 using TVShowTime.UWP.Constants;
 using TVShowTime.UWP.Services;
 using Windows.ApplicationModel.Background;
+using TVShowTime.UWP.Views;
+using System.Linq;
+using TVShowTime.UWP.Models;
+using System.Collections.ObjectModel;
 
 namespace TVShowTime.UWP.ViewModels
 {
@@ -17,6 +21,13 @@ namespace TVShowTime.UWP.ViewModels
         private IHamburgerMenuService _hamburgerMenuService;
 
         private IObjectStorageHelper _localObjectStorageHelper;
+
+        #endregion
+
+        #region Properties
+
+        public ObservableCollection<MenuItem> MenuItems { get; } = new ObservableCollection<MenuItem>();
+        public ObservableCollection<MenuItem> OptionMenuItems { get; } = new ObservableCollection<MenuItem>();
 
         #endregion
 
@@ -32,6 +43,7 @@ namespace TVShowTime.UWP.ViewModels
             _localObjectStorageHelper = ServiceLocator.Current.GetInstance<IObjectStorageHelper>(ServiceLocatorConstants.LocalObjectStorageHelper);
 
             RegisterBackgroundTasks();
+            InitializeHamburgerNavigationService();
         }
 
         #endregion
@@ -55,6 +67,31 @@ namespace TVShowTime.UWP.ViewModels
                     conditions: new SystemCondition(SystemConditionType.InternetAvailable)
                 );
             }
+        }
+
+        private void InitializeHamburgerNavigationService()
+        {
+            var menuItems = _hamburgerMenuService.MenuItems.Where(item => item.Type == MenuItemType.Main);
+            var optionMenuItems = _hamburgerMenuService.MenuItems.Where(item => item.Type == MenuItemType.Options);
+
+            foreach (var menuItem in menuItems)
+            {
+                MenuItems.Add(menuItem);
+            }
+            foreach (var optionMenuItem in optionMenuItems)
+            {
+                OptionMenuItems.Add(optionMenuItem);
+            }
+
+            _hamburgerMenuService.Configure(ViewConstants.Agenda, typeof(AgendaPage));
+            _hamburgerMenuService.Configure(ViewConstants.Collection, typeof(CollectionPage));
+            _hamburgerMenuService.Configure(ViewConstants.Episode, typeof(EpisodePage));
+            _hamburgerMenuService.Configure(ViewConstants.Explore, typeof(ExplorePage));
+            _hamburgerMenuService.Configure(ViewConstants.Feedback, typeof(FeedbackPage));
+            _hamburgerMenuService.Configure(ViewConstants.Settings, typeof(SettingsPage));
+            _hamburgerMenuService.Configure(ViewConstants.Show, typeof(ShowPage));
+            _hamburgerMenuService.Configure(ViewConstants.ToWatch, typeof(ToWatchPage));
+            _hamburgerMenuService.Configure(ViewConstants.Upcoming, typeof(UpcomingPage));
         }
 
         #endregion
