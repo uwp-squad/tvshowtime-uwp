@@ -12,6 +12,7 @@ namespace TVShowTime.UWP.Services
 {
     public interface IHamburgerNavigationService
     {
+        Frame GetFrameElement();
         void SetFrameElement(Frame frame);
         void Configure(string key, Type pageType);
         void NavigateTo(string pageKey);
@@ -118,6 +119,11 @@ namespace TVShowTime.UWP.Services
         #endregion
 
         #region Public methods
+
+        public Frame GetFrameElement()
+        {
+            return _frame;
+        }
 
         public void SetFrameElement(Frame frame)
         {

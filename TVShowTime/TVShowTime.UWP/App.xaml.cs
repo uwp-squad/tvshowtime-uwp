@@ -14,6 +14,8 @@ using Microsoft.Toolkit.Uwp;
 using System.Reflection;
 using TVShowTime.UWP.BackgroundTasks;
 using System.Threading.Tasks;
+using TVShowTime.UWP.Infrastructure;
+using TVShowTime.UWP.Services;
 
 namespace TVShowTime.UWP
 {
@@ -45,7 +47,8 @@ namespace TVShowTime.UWP
         /// <param name="e">Détails concernant la requête et le processus de lancement.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            bool resuming = true;
+            var rootFrame = Window.Current.Content as Frame;
 
             // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu, assurez-vous juste que la fenêtre est active
             if (rootFrame == null)
@@ -70,21 +73,27 @@ namespace TVShowTime.UWP
                     // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que paramètre
                     rootFrame.Navigate(typeof(LoginPage), e.Arguments);
+
+                    resuming = false;
                 }
 
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
+
+                if (resuming)
+                {
+                    // Handle refresh of current page
+                    HandleRefresh();
+                }
             }
         }
-
+        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         protected override void OnActivated(IActivatedEventArgs args)
         {
-            bool resuming = true;
-
             // Get the root frame
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -110,7 +119,6 @@ namespace TVShowTime.UWP
                 // Placez le frame dans la fenêtre active
                 Window.Current.Content = rootFrame;
 
-                resuming = false;
             }
 
             if (rootFrame.Content == null)
@@ -118,17 +126,10 @@ namespace TVShowTime.UWP
                 // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                 // puis configurez la nouvelle page en transmettant les informations requises en tant que paramètre
                 rootFrame.Navigate(typeof(LoginPage));
-
-                resuming = false;
             }
 
             // Ensure the current window is active
             Window.Current.Activate();
-
-            if (resuming)
-            {
-                // TODO : Handle refresh of current page
-            }
         }
 
         /// <summary>
@@ -164,7 +165,7 @@ namespace TVShowTime.UWP
             base.OnBackgroundActivated(args);
             await HandleBackgroundTaskActivationAsync(args, typeof(App));
         }
-        
+
         #endregion
 
         #region Private methods
@@ -210,6 +211,25 @@ namespace TVShowTime.UWP
             }
 
             deferral.Complete();
+        }
+
+        private void HandleRefresh()
+        {
+            var hamburgerMenuService = ServiceLocator.Current.GetInstance<IHamburgerMenuService>();
+            if (hamburgerMenuService != null)
+            {
+                var internalFrame = hamburgerMenuService.GetFrameElement();
+                if (internalFrame.Content is Page internalPage)
+                {
+                    if (internalPage.DataContext is IRefreshable refreshableViewModel)
+                    {
+                        if (refreshableViewModel.CanRefresh && refreshableViewModel.ShouldRefresh)
+                        {
+                            refreshableViewModel.Refresh();
+                        }
+                    }
+                }
+            }
         }
 
         #endregion
