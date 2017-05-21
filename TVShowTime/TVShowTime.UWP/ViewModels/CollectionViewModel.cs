@@ -112,7 +112,13 @@ namespace TVShowTime.UWP.ViewModels
 
         private void SelectShow(Show show)
         {
-            ServiceLocator.Current.GetInstance<ShowViewModel>().LoadShow(show.Id);
+            var lastSeenSeasonNumber = 1;
+            if (show.LastSeen != null)
+            {
+                lastSeenSeasonNumber = show.LastSeen.Season;
+            }
+
+            ServiceLocator.Current.GetInstance<ShowViewModel>().LoadShow(show.Id, lastSeenSeasonNumber);
             _hamburgerMenuService.NavigateTo(ViewConstants.Show);
         }
 

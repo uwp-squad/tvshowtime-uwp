@@ -68,7 +68,7 @@ namespace TVShowTime.UWP.ViewModels
             {
                 Title = "Show",
                 Description = "See the complete description of a TV show (name, description, list of seasons and episodes, seen episodes, next episode).",
-                State = FeedbackCardState.InProgress
+                State = FeedbackCardState.Done
             });
 
             Cards.Add(new FeedbackCard

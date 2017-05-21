@@ -178,7 +178,7 @@
                             <Run Text="Aired on" />
                             <Run Text="{x:Bind Path=ViewModel.Episode.Network, Mode=OneWay}" />
                             <Run Text="the" />
-                            <Run Text="{x:Bind Path=ViewModel.Episode.AirDate, Mode=OneWay}" />
+                            <Run Text="{x:Bind Path=ViewModel.Episode.AirDate, Mode=OneWay, Converter={StaticResource DateToLocaleStringConverter}}" />
                         </TextBlock>
 
                         <TextBlock x:Name="OverviewText" Text="{x:Bind Path=ViewModel.Episode.Overview, Mode=OneWay}"

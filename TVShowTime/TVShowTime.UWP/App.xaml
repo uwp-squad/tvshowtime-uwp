@@ -43,6 +43,8 @@
             <converters:DateToTimelineStringConverter x:Key="DateToTimelineStringConverter" />
             <converters:FeedbackCardStateToStringConverter x:Key="FeedbackCardStateToStringConverter" />
             <converters:FeedbackCardStateToColorConverter x:Key="FeedbackCardStateToColorConverter" />
+            <converters:NotEqualConverter x:Key="NotEqualConverter" />
+            <converters:DateToLocaleStringConverter x:Key="DateToLocaleStringConverter" />
 
             <!-- Styles -->
             <Style TargetType="GridViewItem">

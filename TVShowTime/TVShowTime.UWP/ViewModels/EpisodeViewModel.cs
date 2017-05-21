@@ -182,7 +182,7 @@ namespace TVShowTime.UWP.ViewModels
 
         private void SelectShow(Episode episode)
         {
-            ServiceLocator.Current.GetInstance<ShowViewModel>().LoadShow(episode.Show.Id);
+            ServiceLocator.Current.GetInstance<ShowViewModel>().LoadShow(episode.Show.Id, episode.Season);
             _hamburgerMenuService.NavigateTo(ViewConstants.Show);
         }
 

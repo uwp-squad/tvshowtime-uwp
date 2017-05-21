@@ -110,6 +110,7 @@
       <DependentUpon>ExploreItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ToggleButtonEx.cs" />
+    <Compile Include="Converters\DateToLocaleStringConverter.cs" />
     <Compile Include="Converters\DateToMonthStringConverter.cs" />
     <Compile Include="Converters\DateToTimelineStringConverter.cs" />
     <Compile Include="Converters\DateToTodayColorConverter.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Converters\EmotionValueToBoolConverter.cs" />
     <Compile Include="Converters\FeedbackCardStateToColorConverter.cs" />
     <Compile Include="Converters\FeedbackCardStateToStringConverter.cs" />
+    <Compile Include="Converters\NotEqualConverter.cs" />
     <Compile Include="Converters\NullableBoolInvertedToVisibilityConverter.cs" />
     <Compile Include="Converters\NullableBoolInvertedToBoolConverter.cs" />
     <Compile Include="Converters\NullableBoolToVisibilityConverter.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Models\NavigationMenuItem.cs" />
     <Compile Include="Models\ScrollDirection.cs" />
     <Compile Include="Models\ShowCollectionGroup.cs" />
+    <Compile Include="Models\ShowSeasonGroup.cs" />
     <Compile Include="Models\UserConnnectionProfile.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="Services\HamburgerMenuService.cs" />
@@ -345,7 +348,7 @@
       <Version>3.1.1</Version>
     </PackageReference>
     <PackageReference Include="tvshowtime-api-pcl">
-      <Version>1.0.20</Version>
+      <Version>1.0.21</Version>
     </PackageReference>
     <PackageReference Include="WindowsStateTriggers">
       <Version>1.1.0</Version>
