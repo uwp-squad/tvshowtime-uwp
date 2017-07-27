@@ -676,7 +676,7 @@
 
             <!-- Templates -->
             <DataTemplate x:Key="SymbolMenuItemTemplate">
-                <Grid Width="240" Height="48">
+                <Grid Width="240" Height="48" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="48" />
                         <ColumnDefinition />
@@ -691,7 +691,7 @@
             </DataTemplate>
 
             <DataTemplate x:Key="GlyphMenuItemTemplate">
-                <Grid Width="240" Height="48">
+                <Grid Width="240" Height="48" VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="48" />
                         <ColumnDefinition />

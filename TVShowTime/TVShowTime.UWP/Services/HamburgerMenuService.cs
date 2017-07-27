@@ -20,7 +20,7 @@ namespace TVShowTime.UWP.Services
 
     public interface IHamburgerMenuService : IHamburgerNavigationService
     {
-        List<MenuItem> MenuItems { get; }
+        List<Models.MenuItem> MenuItems { get; }
 
         void SetHamburgerMenuElement(HamburgerMenu hamburgerMenu);
     }
@@ -38,7 +38,7 @@ namespace TVShowTime.UWP.Services
 
         #region Properties
 
-        public List<MenuItem> MenuItems { get; private set; }
+        public List<Models.MenuItem> MenuItems { get; private set; }
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace TVShowTime.UWP.Services
 
         public HamburgerMenuService()
         {
-            MenuItems = new List<MenuItem>
+            MenuItems = new List<Models.MenuItem>
             {
                 new SymbolNavigationMenuItem
                 {

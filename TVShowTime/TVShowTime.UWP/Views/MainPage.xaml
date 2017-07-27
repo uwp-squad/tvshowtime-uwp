@@ -59,7 +59,10 @@
                                 ItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
                                 OptionsItemsSource="{x:Bind ViewModel.OptionMenuItems, Mode=OneWay}"
                                 OptionsItemClick="OnMenuItemClick"
-                                OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}">
+                                OptionsItemTemplateSelector="{StaticResource MenuItemTemplateSelector}"
+                                OpenPaneLength="240"
+                                CompactPaneLength="48"
+                                HamburgerHeight="48">
             <Frame x:Name="ContentFrame">
                 <Frame.ContentTransitions>
                     <TransitionCollection>

@@ -14,7 +14,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="FeedbackCardTemplate" x:DataType="models:FeedbackCard">
-            <controls:DropShadowPanel Margin="8 16" BlurRadius="10.0" ShadowOpacity="0.3">
+            <controls:DropShadowPanel Margin="8 16" BlurRadius="10.0" ShadowOpacity="0.3" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <Grid Height="300" Background="{StaticResource PrimaryWhite}" Padding="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
